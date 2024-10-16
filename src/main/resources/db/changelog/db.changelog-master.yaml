@@ -1,0 +1,100 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: test
+      changes:
+        - createTable:
+            tableName: state
+            schemaName: public
+            columns:
+              - column:
+                  name: state_code
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: abbreviation
+                  type: varchar(2)
+        - createTable:
+            tableName: county
+            schemaName: public
+            columns:
+              - column:
+                  name: county_code
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: fips_code
+                  type: bigint
+              - column:
+                  name: state_code
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_county_state
+                    references: state(state_code)
+        - createTable:
+            tableName: measure
+            schemaName: public
+            columns:
+              - column:
+                  name: measure_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+        - createTable:
+            tableName: county_measure
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: year_span
+                  type: varchar(100)
+              - column:
+                  name: numerator
+                  type: bigint
+              - column:
+                  name: denominator
+                  type: bigint
+              - column:
+                  name: raw_value
+                  type: bigint
+              - column:
+                  name: confidence_lower_bounds
+                  type: bigint
+              - column:
+                  name: confidence_upper_bounds
+                  type: bigint
+              - column:
+                  name: release_year
+                  type: varchar(100)
+              - column:
+                  name: county_code
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_county_measure_county
+                    references: county(county_code)
+              - column:
+                  name: measure_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_county_measure_measure
+                    references: measure(measure_id)
