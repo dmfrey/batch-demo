@@ -73,7 +73,7 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
 
     - name: Build Image with Maven
-      run: mvn -B -Pgithub -ntp spring-boot:build-image
+      run: mvnw -B -Pgithub -ntp spring-boot:build-image
       env:
         NO_DOCKER: ${{ runner.os != 'Linux' }}
         GITHUB_USER: ${{ github.actor }}
