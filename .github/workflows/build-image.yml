@@ -76,7 +76,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build Image with Maven
-      run: ./mvnw -B -Pgithub -ntp spring-boot:build-image
+      run: ./mvnw -B -Pgithub -ntp spring-boot:build-image -s $GITHUB_WORKSPACE/settings.xml
       env:
         NO_DOCKER: ${{ runner.os != 'Linux' }}
         GITHUB_USER: ${{ github.actor }}
