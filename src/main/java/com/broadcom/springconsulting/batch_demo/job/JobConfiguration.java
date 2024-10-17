@@ -15,6 +15,7 @@ import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.PathResource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
@@ -63,7 +64,7 @@ public class JobConfiguration {
 
         return new FlatFileItemReaderBuilder<InputRow>()
                 .name( "inputRowItemReader" )
-                .resource( this.resourceLoader.getResource( filePath ) )
+                .resource( new PathResource( filePath ) )
                 .linesToSkip( 1 )
                 .delimited()
                 .names( "state", "county", "stateCode", "countyCode", "yearSpan", "measureName", "measureId", "numerator", "denominator", "rawValue", "confidenceIntervalLowerBound", "confidenceIntervalUpperBound", "dataReleaseYear", "fipsCode" )

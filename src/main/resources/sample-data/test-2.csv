@@ -1,0 +1,197 @@
+State,County,State code,County code,Year span,Measure name,Measure id,Numerator,Denominator,Raw value,Confidence Interval Lower Bound,Confidence Interval Upper Bound,Data Release Year,fipscode
+AK,Alaska,2,0,2003-2005,Violent crime rate,43,2338.666667,344305.3333,679.2420681,,,,2000
+AK,Alaska,2,0,2004-2006,Violent crime rate,43,2600.666667,346477.6667,750.6015299,,,,2000
+AK,Alaska,2,0,2005-2007,Violent crime rate,43,2701,349408,773.0217969,,,2010,2000
+AK,Alaska,2,0,2006-2008,Violent crime rate,43,2934.333333,355932,824.4084076,,,2011,2000
+AK,Alaska,2,0,2007-2009,Violent crime rate,43,2908.166667,356843.8333,814.9690131,,,2012,2000
+AK,Alaska,2,0,2008-2010,Violent crime rate,43,2878.666667,355870.1667,808.9092417,,,2013,2000
+AK,Alaska,2,0,2009-2011,Violent crime rate,43,2808,363443.3333,772.6101272,,,2014,2000
+AK,Aleutians East Borough,2,13,2003-2005,Violent crime rate,43,,,,,,,2013
+AK,Aleutians East Borough,2,13,2004-2006,Violent crime rate,43,,,,,,,2013
+AK,Aleutians East Borough,2,13,2005-2007,Violent crime rate,43,,,,,,2010,2013
+AK,Aleutians East Borough,2,13,2006-2008,Violent crime rate,43,,,,,,2011,2013
+AK,Aleutians East Borough,2,13,2007-2009,Violent crime rate,43,,,,,,2012,2013
+AK,Aleutians East Borough,2,13,2008-2010,Violent crime rate,43,,,,,,2013,2013
+AK,Aleutians East Borough,2,13,2009-2011,Violent crime rate,43,,,,,,2014,2013
+AK,Aleutians West Census Area,2,16,2003-2005,Violent crime rate,43,16.33333333,4865.333333,335.7084133,,,,2016
+AK,Aleutians West Census Area,2,16,2004-2006,Violent crime rate,43,18.33333333,4780,383.5425384,,,,2016
+AK,Aleutians West Census Area,2,16,2005-2007,Violent crime rate,43,19.66666667,4768.666667,412.4143716,,,2010,2016
+AK,Aleutians West Census Area,2,16,2006-2008,Violent crime rate,43,20,4553.333333,439.238653,,,2011,2016
+AK,Aleutians West Census Area,2,16,2007-2009,Violent crime rate,43,16.33333333,4224.666667,386.6182736,,,2012,2016
+AK,Aleutians West Census Area,2,16,2008-2010,Violent crime rate,43,14.33333333,4314.333333,332.2259136,,,2013,2016
+AK,Aleutians West Census Area,2,16,2009-2011,Violent crime rate,43,14.66666667,4554,322.0611916,,,2014,2016
+AK,Anchorage Borough,2,20,2003-2005,Violent crime rate,43,1989,273636,726.8780424,,,,2020
+AK,Anchorage Borough,2,20,2004-2006,Violent crime rate,43,2272.666667,275838.3333,823.9125575,,,,2020
+AK,Anchorage Borough,2,20,2005-2007,Violent crime rate,43,2351,279314.3333,841.70403,,,2010,2020
+AK,Anchorage Borough,2,20,2006-2008,Violent crime rate,43,2555.666667,280634,910.6760644,,,2011,2020
+AK,Anchorage Borough,2,20,2007-2009,Violent crime rate,43,2520.333333,282503.3333,892.1428656,,,2012,2020
+AK,Anchorage Borough,2,20,2008-2010,Violent crime rate,43,2528,285064.6667,886.8163247,,,2013,2020
+AK,Anchorage Borough,2,20,2009-2011,Violent crime rate,43,2442,290693.6667,840.0595816,,,2014,2020
+AK,Bethel Census Area,2,50,2003-2005,Violent crime rate,43,,,,,,,2050
+AK,Bethel Census Area,2,50,2004-2006,Violent crime rate,43,,,,,,,2050
+AK,Bethel Census Area,2,50,2005-2007,Violent crime rate,43,,,,,,2010,2050
+AK,Bethel Census Area,2,50,2006-2008,Violent crime rate,43,,,,,,2011,2050
+AK,Bethel Census Area,2,50,2007-2009,Violent crime rate,43,,,,,,2012,2050
+AK,Bethel Census Area,2,50,2008-2010,Violent crime rate,43,,,,,,2013,2050
+AK,Bethel Census Area,2,50,2009-2011,Violent crime rate,43,,,,,,2014,2050
+AK,Bristol Bay Borough,2,60,2003-2005,Violent crime rate,43,16.33333333,1130.333333,1445.001475,,,,2060
+AK,Bristol Bay Borough,2,60,2004-2006,Violent crime rate,43,14.66666667,1116.666667,1313.432836,,,,2060
+AK,Bristol Bay Borough,2,60,2005-2007,Violent crime rate,43,12,1089.333333,1101.591187,,,2010,2060
+AK,Bristol Bay Borough,2,60,2006-2008,Violent crime rate,43,6.666666667,1038,642.2607579,,,2011,2060
+AK,Bristol Bay Borough,2,60,2007-2009,Violent crime rate,43,5,974.6666667,512.995896,,,2012,2060
+AK,Bristol Bay Borough,2,60,2008-2010,Violent crime rate,43,2.666666667,964.3333333,276.5295541,,,2013,2060
+AK,Bristol Bay Borough,2,60,2009-2011,Violent crime rate,43,3.333333333,981.6666667,339.5585739,,,2014,2060
+AK,Denali Borough,2,68,2003-2005,Violent crime rate,43,,,,,,,2068
+AK,Denali Borough,2,68,2004-2006,Violent crime rate,43,,,,,,,2068
+AK,Denali Borough,2,68,2005-2007,Violent crime rate,43,,,,,,,2068
+AK,Denali Borough,2,68,2006-2008,Violent crime rate,43,,,,,,,2068
+AK,Denali Borough,2,68,2007-2009,Violent crime rate,43,,,,,,,2068
+AK,Denali Borough,2,68,2008-2010,Violent crime rate,43,,,,,,,2068
+AK,Denali Borough,2,68,2009-2011,Violent crime rate,43,,,,,,,2068
+AK,Dillingham Census Area,2,70,2003-2005,Violent crime rate,43,54.33333333,2515,2160.371107,,,,2070
+AK,Dillingham Census Area,2,70,2004-2006,Violent crime rate,43,30.66666667,2495.666667,1228.796581,,,,2070
+AK,Dillingham Census Area,2,70,2005-2007,Violent crime rate,43,51.33333333,2492,2059.925094,,,2010,2070
+AK,Dillingham Census Area,2,70,2006-2008,Violent crime rate,43,57.33333333,2497.333333,2295.782168,,,2011,2070
+AK,Dillingham Census Area,2,70,2007-2009,Violent crime rate,43,52.66666667,2488.333333,2116.543871,,,2012,2070
+AK,Dillingham Census Area,2,70,2008-2010,Violent crime rate,43,41,2485.5,1649.567492,,,2013,2070
+AK,Dillingham Census Area,2,70,2009-2011,Violent crime rate,43,35,2465,1419.878296,,,2014,2070
+AK,Fairbanks North Star Borough,2,90,2003-2005,Violent crime rate,43,,,,,,,2090
+AK,Fairbanks North Star Borough,2,90,2004-2006,Violent crime rate,43,,,,,,,2090
+AK,Fairbanks North Star Borough,2,90,2005-2007,Violent crime rate,43,,,,,,2010,2090
+AK,Fairbanks North Star Borough,2,90,2006-2008,Violent crime rate,43,,,,,,2011,2090
+AK,Fairbanks North Star Borough,2,90,2007-2009,Violent crime rate,43,,,,,,2012,2090
+AK,Fairbanks North Star Borough,2,90,2008-2010,Violent crime rate,43,,,,,,2013,2090
+AK,Fairbanks North Star Borough,2,90,2009-2011,Violent crime rate,43,,,,,,2014,2090
+AK,Haines Borough,2,100,2003-2005,Violent crime rate,43,2.666666667,1792.333333,148.7818486,,,,2100
+AK,Haines Borough,2,100,2004-2006,Violent crime rate,43,1.666666667,1966,84.77449983,,,,2100
+AK,Haines Borough,2,100,2005-2007,Violent crime rate,43,6.666666667,2122.333333,314.1196796,,,2010,2100
+AK,Haines Borough,2,100,2006-2008,Violent crime rate,43,9.333333333,2269.666667,411.2204435,,,2011,2100
+AK,Haines Borough,2,100,2007-2009,Violent crime rate,43,11.33333333,2262.666667,500.8839128,,,2012,2100
+AK,Haines Borough,2,100,2008-2010,Violent crime rate,43,8.333333333,2080.333333,400.5768306,,,2013,2100
+AK,Haines Borough,2,100,2009-2011,Violent crime rate,43,10.33333333,1909.666667,541.1066504,,,2014,2100
+AK,Juneau Borough,2,110,2003-2005,Violent crime rate,43,121.6666667,31335,388.2772193,,,,2110
+AK,Juneau Borough,2,110,2004-2006,Violent crime rate,43,130.3333333,31433,414.6385434,,,,2110
+AK,Juneau Borough,2,110,2005-2007,Violent crime rate,43,128,31180,410.5195638,,,2010,2110
+AK,Juneau Borough,2,110,2006-2008,Violent crime rate,43,123.6666667,30907.66667,400.116476,,,2011,2110
+AK,Juneau Borough,2,110,2007-2009,Violent crime rate,43,129.6666667,30820.66667,420.7133741,,,2012,2110
+AK,Juneau Borough,2,110,2008-2010,Violent crime rate,43,132,30997,425.8476627,,,2013,2110
+AK,Juneau Borough,2,110,2009-2011,Violent crime rate,43,144.3333333,31374.66667,460.0314479,,,2014,2110
+AK,Kenai Peninsula Borough,2,122,2003-2005,Violent crime rate,43,,,,,,,2122
+AK,Kenai Peninsula Borough,2,122,2004-2006,Violent crime rate,43,,,,,,,2122
+AK,Kenai Peninsula Borough,2,122,2005-2007,Violent crime rate,43,,,,,,2010,2122
+AK,Kenai Peninsula Borough,2,122,2006-2008,Violent crime rate,43,,,,,,2011,2122
+AK,Kenai Peninsula Borough,2,122,2007-2009,Violent crime rate,43,,,,,,2012,2122
+AK,Kenai Peninsula Borough,2,122,2008-2010,Violent crime rate,43,,,,,,2013,2122
+AK,Kenai Peninsula Borough,2,122,2009-2011,Violent crime rate,43,,,,,,2014,2122
+AK,Ketchikan Gateway Borough,2,130,2003-2005,Violent crime rate,43,40,7564.333333,528.7974265,,,,2130
+AK,Ketchikan Gateway Borough,2,130,2004-2006,Violent crime rate,43,40.33333333,7508.666667,537.157063,,,,2130
+AK,Ketchikan Gateway Borough,2,130,2005-2007,Violent crime rate,43,33.66666667,7460.333333,451.2756356,,,2010,2130
+AK,Ketchikan Gateway Borough,2,130,2006-2008,Violent crime rate,43,28.33333333,7390,383.4009923,,,2011,2130
+AK,Ketchikan Gateway Borough,2,130,2007-2009,Violent crime rate,43,26.33333333,7301.333333,360.6647188,,,2012,2130
+AK,Ketchikan Gateway Borough,2,130,2008-2010,Violent crime rate,43,29,7523.333333,385.4674347,,,2013,2130
+AK,Ketchikan Gateway Borough,2,130,2009-2011,Violent crime rate,43,29,7819,370.8914183,,,2014,2130
+AK,Kodiak Island Borough,2,150,2003-2005,Violent crime rate,43,,,,,,,2150
+AK,Kodiak Island Borough,2,150,2004-2006,Violent crime rate,43,,,,,,,2150
+AK,Kodiak Island Borough,2,150,2005-2007,Violent crime rate,43,,,,,,2010,2150
+AK,Kodiak Island Borough,2,150,2006-2008,Violent crime rate,43,,,,,,2011,2150
+AK,Kodiak Island Borough,2,150,2007-2009,Violent crime rate,43,,,,,,2012,2150
+AK,Kodiak Island Borough,2,150,2008-2010,Violent crime rate,43,,,,,,2013,2150
+AK,Kodiak Island Borough,2,150,2009-2011,Violent crime rate,43,,,,,,2014,2150
+AK,Lake and Peninsula Borough,2,164,2003-2005,Violent crime rate,43,,,,,,,2164
+AK,Lake and Peninsula Borough,2,164,2004-2006,Violent crime rate,43,,,,,,,2164
+AK,Lake and Peninsula Borough,2,164,2005-2007,Violent crime rate,43,,,,,,2010,2164
+AK,Lake and Peninsula Borough,2,164,2006-2008,Violent crime rate,43,,,,,,2011,2164
+AK,Lake and Peninsula Borough,2,164,2007-2009,Violent crime rate,43,,,,,,2012,2164
+AK,Lake and Peninsula Borough,2,164,2008-2010,Violent crime rate,43,,,,,,2013,2164
+AK,Lake and Peninsula Borough,2,164,2009-2011,Violent crime rate,43,,,,,,2014,2164
+AK,Matanuska-Susitna Borough,2,170,2003-2005,Violent crime rate,43,,,,,,,2170
+AK,Matanuska-Susitna Borough,2,170,2004-2006,Violent crime rate,43,,,,,,,2170
+AK,Matanuska-Susitna Borough,2,170,2005-2007,Violent crime rate,43,,,,,,2010,2170
+AK,Matanuska-Susitna Borough,2,170,2006-2008,Violent crime rate,43,,,,,,2011,2170
+AK,Matanuska-Susitna Borough,2,170,2007-2009,Violent crime rate,43,,,,,,2012,2170
+AK,Matanuska-Susitna Borough,2,170,2008-2010,Violent crime rate,43,,,,,,2013,2170
+AK,Matanuska-Susitna Borough,2,170,2009-2011,Violent crime rate,43,,,,,,2014,2170
+AK,Nome Census Area,2,180,2003-2005,Violent crime rate,43,,,,,,,2180
+AK,Nome Census Area,2,180,2004-2006,Violent crime rate,43,,,,,,,2180
+AK,Nome Census Area,2,180,2005-2007,Violent crime rate,43,,,,,,2010,2180
+AK,Nome Census Area,2,180,2006-2008,Violent crime rate,43,,,,,,2011,2180
+AK,Nome Census Area,2,180,2007-2009,Violent crime rate,43,,,,,,2012,2180
+AK,Nome Census Area,2,180,2008-2010,Violent crime rate,43,,,,,,2013,2180
+AK,Nome Census Area,2,180,2009-2011,Violent crime rate,43,,,,,,2014,2180
+AK,North Slope Borough,2,185,2003-2005,Violent crime rate,43,63.66666667,7234,880.1032163,,,,2185
+AK,North Slope Borough,2,185,2004-2006,Violent crime rate,43,59.66666667,7124.333333,837.5052637,,,,2185
+AK,North Slope Borough,2,185,2005-2007,Violent crime rate,43,64.66666667,6883.333333,939.4673124,,,2010,2185
+AK,North Slope Borough,2,185,2006-2008,Violent crime rate,43,62.66666667,6659.666667,940.9880374,,,2011,2185
+AK,North Slope Borough,2,185,2007-2009,Violent crime rate,43,67.66666667,6523,1037.355,,,2012,2185
+AK,North Slope Borough,2,185,2008-2010,Violent crime rate,43,67.33333333,7476.666667,900.5795809,,,2013,2185
+AK,North Slope Borough,2,185,2009-2011,Violent crime rate,43,78.66666667,8535.666667,921.6229937,,,2014,2185
+AK,Northwest Arctic Borough,2,188,2003-2005,Violent crime rate,43,,,,,,,2188
+AK,Northwest Arctic Borough,2,188,2004-2006,Violent crime rate,43,,,,,,,2188
+AK,Northwest Arctic Borough,2,188,2005-2007,Violent crime rate,43,,,,,,2010,2188
+AK,Northwest Arctic Borough,2,188,2006-2008,Violent crime rate,43,,,,,,2011,2188
+AK,Northwest Arctic Borough,2,188,2007-2009,Violent crime rate,43,,,,,,2012,2188
+AK,Northwest Arctic Borough,2,188,2008-2010,Violent crime rate,43,,,,,,2013,2188
+AK,Northwest Arctic Borough,2,188,2009-2011,Violent crime rate,43,,,,,,2014,2188
+AK,Prince of Wales-Outer Ketchikan Census Area,2,201,2003-2005,Violent crime rate,43,,,,,,,2201
+AK,Prince of Wales-Outer Ketchikan Census Area,2,201,2004-2006,Violent crime rate,43,,,,,,,2201
+AK,Prince of Wales-Outer Ketchikan Census Area,2,201,2005-2007,Violent crime rate,43,,,,,,2010,2201
+AK,Prince of Wales-Outer Ketchikan Census Area,2,201,2006-2008,Violent crime rate,43,,,,,,2011,2201
+AK,Prince of Wales-Outer Ketchikan Census Area,2,201,2007-2009,Violent crime rate,43,,,,,,2012,2201
+AK,Prince of Wales-Outer Ketchikan Census Area,2,201,2008-2010,Violent crime rate,43,,,,,,2013,2201
+AK,Prince of Wales-Outer Ketchikan Census Area,2,201,2009-2011,Violent crime rate,43,,,,,,2014,2201
+AK,Sitka Borough,2,220,2003-2005,Violent crime rate,43,23,8941.666667,257.22274,,,,2220
+AK,Sitka Borough,2,220,2004-2006,Violent crime rate,43,22.66666667,9000,251.8518519,,,,2220
+AK,Sitka Borough,2,220,2005-2007,Violent crime rate,43,26,8988.333333,289.2638606,,,2010,2220
+AK,Sitka Borough,2,220,2006-2008,Violent crime rate,43,20,8961.333333,223.1810742,,,2011,2220
+AK,Sitka Borough,2,220,2007-2009,Violent crime rate,43,20.66666667,8902.333333,232.1488748,,,2012,2220
+AK,Sitka Borough,2,220,2008-2010,Violent crime rate,43,21.33333333,8885.333333,240.0960384,,,2013,2220
+AK,Sitka Borough,2,220,2009-2011,Violent crime rate,43,22.33333333,8938,249.8694712,,,2014,2220
+AK,Skagway-Hoonah-Angoon Census Area,2,232,2003-2005,Violent crime rate,43,,,,,,,2232
+AK,Skagway-Hoonah-Angoon Census Area,2,232,2004-2006,Violent crime rate,43,,,,,,,2232
+AK,Skagway-Hoonah-Angoon Census Area,2,232,2005-2007,Violent crime rate,43,,,,,,2010,2232
+AK,Skagway-Hoonah-Angoon Census Area,2,232,2006-2008,Violent crime rate,43,,,,,,2011,2232
+AK,Skagway-Hoonah-Angoon Census Area,2,232,2007-2009,Violent crime rate,43,,,,,,2012,2232
+AK,Skagway-Hoonah-Angoon Census Area,2,232,2008-2010,Violent crime rate,43,,,,,,2013,2232
+AK,Skagway-Hoonah-Angoon Census Area,2,232,2009-2011,Violent crime rate,43,,,,,,2014,2232
+AK,Southeast Fairbanks Census Area,2,240,2003-2005,Violent crime rate,43,,,,,,,2240
+AK,Southeast Fairbanks Census Area,2,240,2004-2006,Violent crime rate,43,,,,,,,2240
+AK,Southeast Fairbanks Census Area,2,240,2005-2007,Violent crime rate,43,,,,,,2010,2240
+AK,Southeast Fairbanks Census Area,2,240,2006-2008,Violent crime rate,43,,,,,,2011,2240
+AK,Southeast Fairbanks Census Area,2,240,2007-2009,Violent crime rate,43,,,,,,2012,2240
+AK,Southeast Fairbanks Census Area,2,240,2008-2010,Violent crime rate,43,,,,,,2013,2240
+AK,Southeast Fairbanks Census Area,2,240,2009-2011,Violent crime rate,43,,,,,,2014,2240
+AK,Valdez-Cordova Census Area,2,261,2003-2005,Violent crime rate,43,,,,,,,2261
+AK,Valdez-Cordova Census Area,2,261,2004-2006,Violent crime rate,43,,,,,,,2261
+AK,Valdez-Cordova Census Area,2,261,2005-2007,Violent crime rate,43,,,,,,2010,2261
+AK,Valdez-Cordova Census Area,2,261,2006-2008,Violent crime rate,43,41,6044,678.3587029,,,2011,2261
+AK,Valdez-Cordova Census Area,2,261,2007-2009,Violent crime rate,43,39.5,6010.5,657.1832626,,,2012,2261
+AK,Valdez-Cordova Census Area,2,261,2008-2010,Violent crime rate,43,34.66666667,6078.666667,570.3005045,,,2013,2261
+AK,Valdez-Cordova Census Area,2,261,2009-2011,Violent crime rate,43,28.33333333,6172,459.0624325,,,2014,2261
+AK,Wade Hampton Census Area,2,270,2003-2005,Violent crime rate,43,,,,,,,2270
+AK,Wade Hampton Census Area,2,270,2004-2006,Violent crime rate,43,,,,,,,2270
+AK,Wade Hampton Census Area,2,270,2005-2007,Violent crime rate,43,,,,,,2010,2270
+AK,Wade Hampton Census Area,2,270,2006-2008,Violent crime rate,43,,,,,,2011,2270
+AK,Wade Hampton Census Area,2,270,2007-2009,Violent crime rate,43,,,,,,2012,2270
+AK,Wade Hampton Census Area,2,270,2008-2010,Violent crime rate,43,,,,,,2013,2270
+AK,Wade Hampton Census Area,2,270,2009-2011,Violent crime rate,43,,,,,,2014,2270
+AK,Wrangell-Petersburg Census Area,2,280,2003-2005,Violent crime rate,43,11.66666667,5291.333333,220.4863299,,,,2280
+AK,Wrangell-Petersburg Census Area,2,280,2004-2006,Violent crime rate,43,9.666666667,5215,185.3627357,,,,2280
+AK,Wrangell-Petersburg Census Area,2,280,2005-2007,Violent crime rate,43,8,5109.333333,156.5762004,,,2010,2280
+AK,Wrangell-Petersburg Census Area,2,280,2006-2008,Violent crime rate,43,9.666666667,4977,194.2267765,,,2011,2280
+AK,Wrangell-Petersburg Census Area,2,280,2007-2009,Violent crime rate,43,18.66666667,4832.333333,386.286818,,,2012,2280
+AK,Wrangell-Petersburg Census Area,2,280,2008-2010,Violent crime rate,43,,,,,,2013,2280
+AK,Wrangell-Petersburg Census Area,2,280,2009-2011,Violent crime rate,43,,,,,,2014,2280
+AK,Yakutat Borough,2,282,2003-2005,Violent crime rate,43,,,,,,,2282
+AK,Yakutat Borough,2,282,2004-2006,Violent crime rate,43,,,,,,,2282
+AK,Yakutat Borough,2,282,2005-2007,Violent crime rate,43,,,,,,2010,2282
+AK,Yakutat Borough,2,282,2006-2008,Violent crime rate,43,,,,,,2011,2282
+AK,Yakutat Borough,2,282,2007-2009,Violent crime rate,43,,,,,,2012,2282
+AK,Yakutat Borough,2,282,2008-2010,Violent crime rate,43,,,,,,2013,2282
+AK,Yakutat Borough,2,282,2009-2011,Violent crime rate,43,,,,,,2014,2282
+AK,Yukon-Koyukuk Census Area,2,290,2003-2005,Violent crime rate,43,,,,,,,2290
+AK,Yukon-Koyukuk Census Area,2,290,2004-2006,Violent crime rate,43,,,,,,,2290
+AK,Yukon-Koyukuk Census Area,2,290,2005-2007,Violent crime rate,43,,,,,,2010,2290
+AK,Yukon-Koyukuk Census Area,2,290,2006-2008,Violent crime rate,43,,,,,,2011,2290
+AK,Yukon-Koyukuk Census Area,2,290,2007-2009,Violent crime rate,43,,,,,,2012,2290
+AK,Yukon-Koyukuk Census Area,2,290,2008-2010,Violent crime rate,43,,,,,,2013,2290
+AK,Yukon-Koyukuk Census Area,2,290,2009-2011,Violent crime rate,43,,,,,,2014,2290
