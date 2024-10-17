@@ -1,19 +1,9 @@
 services:
-
-  taskdb:
+  postgres:
     image: 'postgres:latest'
     environment:
-      - 'POSTGRES_DB=task'
-      - 'POSTGRES_PASSWORD=task_password'
-      - 'POSTGRES_USER=task_user'
+      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
     ports:
-      - '5432:5432'
-
-  healthrankingsdb:
-    image: 'postgres:latest'
-    environment:
-      - 'POSTGRES_DB=health_rankings'
-      - 'POSTGRES_PASSWORD=health_rankings_password'
-      - 'POSTGRES_USER=health_rankings_user'
-    ports:
-      - '5433:5432'
+      - '5432'

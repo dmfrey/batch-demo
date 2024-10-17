@@ -1,8 +1,0 @@
-debug: false
-
-spring:
-
-  docker:
-    compose:
-      enabled: true
-      skip.in-tests: false

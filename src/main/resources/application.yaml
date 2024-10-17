@@ -1,5 +1,3 @@
-debug: false
-
 logging.level:
   liquibase: info
   org.springframework.batch: info
