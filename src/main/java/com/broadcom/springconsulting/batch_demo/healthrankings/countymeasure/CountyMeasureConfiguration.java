@@ -20,7 +20,7 @@ public class CountyMeasureConfiguration {
     public Step countyMeasureStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager,
                                   FlatFileItemReader<InputRow> reader, CountyMeasureProcessor processor, ItemWriter<CountyMeasure> writer ) {
 
-        return new StepBuilder("county measure - step", jobRepository )
+        return new StepBuilder("county measure step", jobRepository )
                 .<InputRow, CountyMeasure> chunk(100, transactionManager )
                 .reader( reader )
                 .processor( processor )
