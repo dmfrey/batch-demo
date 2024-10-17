@@ -36,7 +36,7 @@
 		<connection>scm:git:https://github.com/dmfrey/batch-demo.git</connection>
 		<developerConnection>scm:git:https://github.com/dmfrey/batch-demo.git</developerConnection>
 		<tag/>
-		<url>https://github.com/dmfrey/time-service</url>
+		<url>https://github.com/dmfrey/batch-demo</url>
 	</scm>
 
 	<properties>

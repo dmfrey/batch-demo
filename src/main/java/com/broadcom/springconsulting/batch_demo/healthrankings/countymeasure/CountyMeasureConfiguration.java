@@ -7,6 +7,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -29,7 +30,7 @@ public class CountyMeasureConfiguration {
     }
 
     @Bean
-    ItemWriter<CountyMeasure> countyMeasureWriter( DataSource dataSource ) {
+    ItemWriter<CountyMeasure> countyMeasureWriter( @Qualifier( "healthRankingsDataSource" ) DataSource dataSource ) {
 
         return new JdbcBatchItemWriterBuilder<CountyMeasure>()
                 .sql( "INSERT INTO county_measure (id, year_span, numerator, denominator, raw_value, confidence_lower_bounds, confidence_upper_bounds, release_year, county_code, measure_id) VALUES (:id, :yearSpan, :numerator, :denominator, :rawValue, :confidenceLowerBounds, :confidenceUpperBounds, :releaseYear, :countyCode, :measureId)" )

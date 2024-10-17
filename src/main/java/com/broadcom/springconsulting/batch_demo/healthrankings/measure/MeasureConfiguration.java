@@ -9,6 +9,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -42,7 +43,7 @@ public class MeasureConfiguration {
     }
 
     @Bean
-    ItemWriter<Measure> measureWriter( DataSource dataSource ) {
+    ItemWriter<Measure> measureWriter( @Qualifier( "healthRankingsDataSource" ) DataSource dataSource ) {
 
         return new JdbcBatchItemWriterBuilder<Measure>()
                 .sql( "INSERT INTO measure (measure_id, name) VALUES (:measureId, :name) ON CONFLICT (measure_id) DO UPDATE set measure_id = :measureId" )

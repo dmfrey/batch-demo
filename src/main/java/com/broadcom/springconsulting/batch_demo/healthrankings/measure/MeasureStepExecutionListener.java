@@ -15,11 +15,11 @@ public class MeasureStepExecutionListener implements StepExecutionListener {
 
     private static final Logger log = LoggerFactory.getLogger( MeasureStepExecutionListener.class );
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate healthrankingsDataSource;
 
-    public MeasureStepExecutionListener(final JdbcTemplate jdbcTemplate ) {
+    public MeasureStepExecutionListener(final JdbcTemplate healthrankingsDataSource ) {
 
-        this.jdbcTemplate = jdbcTemplate;
+        this.healthrankingsDataSource = healthrankingsDataSource;
 
     }
 
@@ -28,7 +28,7 @@ public class MeasureStepExecutionListener implements StepExecutionListener {
 
         if( stepExecution.getStatus() == BatchStatus.COMPLETED ) {
 
-            jdbcTemplate
+            healthrankingsDataSource
                     .query( "SELECT measure_id, name FROM measure ORDER BY name", new DataClassRowMapper<>( Measure.class ) )
                     .forEach( measure -> log.info( "Found <{{}}> in the database.", measure ) );
 

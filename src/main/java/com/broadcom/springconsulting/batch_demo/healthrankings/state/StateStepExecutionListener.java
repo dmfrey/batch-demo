@@ -15,11 +15,11 @@ public class StateStepExecutionListener implements StepExecutionListener {
 
     private static final Logger log = LoggerFactory.getLogger( StateStepExecutionListener.class );
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate healthrankingsDataSource;
 
-    public StateStepExecutionListener( final JdbcTemplate jdbcTemplate ) {
+    public StateStepExecutionListener( final JdbcTemplate healthrankingsDataSource ) {
 
-        this.jdbcTemplate = jdbcTemplate;
+        this.healthrankingsDataSource = healthrankingsDataSource;
 
     }
 
@@ -28,7 +28,7 @@ public class StateStepExecutionListener implements StepExecutionListener {
 
         if( stepExecution.getStatus() == BatchStatus.COMPLETED ) {
 
-            jdbcTemplate
+            healthrankingsDataSource
                     .query( "SELECT state_code, abbreviation FROM state ORDER BY abbreviation", new DataClassRowMapper<>( State.class ) )
                     .forEach( state -> log.info( "Found <{{}}> in the database.", state ) );
 

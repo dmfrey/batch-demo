@@ -1,6 +1,5 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
-import com.broadcom.springconsulting.batch_demo.healthrankings.state.State;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
@@ -16,11 +15,11 @@ public class CountyStepExecutionListener implements StepExecutionListener {
 
     private static final Logger log = LoggerFactory.getLogger( CountyStepExecutionListener.class );
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate healthrankingsDataSource;
 
-    public CountyStepExecutionListener( final JdbcTemplate jdbcTemplate ) {
+    public CountyStepExecutionListener( final JdbcTemplate healthrankingsDataSource ) {
 
-        this.jdbcTemplate = jdbcTemplate;
+        this.healthrankingsDataSource = healthrankingsDataSource;
 
     }
 
@@ -29,7 +28,7 @@ public class CountyStepExecutionListener implements StepExecutionListener {
 
         if( stepExecution.getStatus() == BatchStatus.COMPLETED ) {
 
-            jdbcTemplate
+            healthrankingsDataSource
                     .query( "SELECT county_code, name, fips_code, state_code FROM county", new DataClassRowMapper<>( County.class ) )
                     .forEach( county -> log.info( "Found <{{}}> in the database.", county ) );
 
