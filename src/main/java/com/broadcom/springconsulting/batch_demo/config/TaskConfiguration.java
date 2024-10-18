@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableTask
-@ConditionalOnBean( SpringLiquibase.class )
+//@ConditionalOnBean( SpringLiquibase.class )
 public class TaskConfiguration {
 
 }

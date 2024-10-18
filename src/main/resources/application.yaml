@@ -1,6 +1,7 @@
 logging.level:
   liquibase: info
   org.springframework.batch: info
+  org.springframework.cloud.task: debug
   org.springframework.jdbc: info
   com.broadcom.springconsulting.batch_demo: info
 
@@ -57,8 +58,8 @@ management:
       probability: 1.0
 
   otlp:
-    metrics:
-      export:
-        url: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/metrics
+#    metrics:
+#      export:
+#        url: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/metrics
     tracing:
       endpoint: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/traces
