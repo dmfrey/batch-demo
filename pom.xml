@@ -12,7 +12,7 @@
 
 	<groupId>com.broadcom.springconsulting</groupId>
 	<artifactId>batch-demo</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.8-SNAPSHOT</version>
 	<name>batch-demo</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -73,29 +73,34 @@
 
 		<!-- Observability dependencies -->
 		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-			<scope>runtime</scope>
+			<groupId>io.micrometer.prometheus</groupId>
+			<artifactId>prometheus-rsocket-spring</artifactId>
+			<version>1.5.0</version>
 		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-tracing</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-tracing-bridge-otel</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-exporter-otlp</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>io.micrometer</groupId>-->
+<!--			<artifactId>micrometer-registry-prometheus</artifactId>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>io.micrometer</groupId>-->
+<!--			<artifactId>micrometer-tracing</artifactId>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>io.micrometer</groupId>-->
+<!--			<artifactId>micrometer-tracing-bridge-otel</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>io.opentelemetry</groupId>-->
+<!--			<artifactId>opentelemetry-exporter-otlp</artifactId>-->
+<!--		</dependency>-->
 
-		<dependency>
-			<groupId>net.ttddyy.observation</groupId>
-			<artifactId>datasource-micrometer-spring-boot</artifactId>
-			<version>1.0.5</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>net.ttddyy.observation</groupId>-->
+<!--			<artifactId>datasource-micrometer-spring-boot</artifactId>-->
+<!--			<version>1.0.5</version>-->
+<!--		</dependency>-->
 
 		<!-- Developer Tools -->
 		<dependency>
