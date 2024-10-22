@@ -1,0 +1,64 @@
+State,County,State code,County code,Year span,Measure name,Measure id,Numerator,Denominator,Raw value,Confidence Interval Lower Bound,Confidence Interval Upper Bound,Data Release Year,fipscode
+CT,Connecticut,9,0,2003-2005,Violent crime rate,43,9184,2891797,317.5879911,,,,9000
+CT,Connecticut,9,0,2004-2006,Violent crime rate,43,8457.333333,2852365,296.502493,,,,9000
+CT,Connecticut,9,0,2005-2007,Violent crime rate,43,8509,2852398.667,298.3103344,,,2010,9000
+CT,Connecticut,9,0,2006-2008,Violent crime rate,43,9157.666667,2856349,320.6074141,,,2011,9000
+CT,Connecticut,9,0,2007-2009,Violent crime rate,43,9963,2896847,343.9256543,,,2012,9000
+CT,Connecticut,9,0,2008-2010,Violent crime rate,43,9917.333333,2913670,340.3725656,,,2013,9000
+CT,Connecticut,9,0,2009-2011,Violent crime rate,43,9679,2933893,329.9029651,,,2014,9000
+CT,Fairfield County,9,1,2003-2005,Violent crime rate,43,2505.333333,885512,282.9248314,,,,9001
+CT,Fairfield County,9,1,2004-2006,Violent crime rate,43,2591.666667,885218.6667,292.7713529,,,,9001
+CT,Fairfield County,9,1,2005-2007,Violent crime rate,43,2653,884637.6667,299.8967939,,,2010,9001
+CT,Fairfield County,9,1,2006-2008,Violent crime rate,43,2761.333333,881801,313.146995,,,2011,9001
+CT,Fairfield County,9,1,2007-2009,Violent crime rate,43,2797,880150.6667,317.7865002,,,2012,9001
+CT,Fairfield County,9,1,2008-2010,Violent crime rate,43,2735.333333,885176.3333,309.0156425,,,2013,9001
+CT,Fairfield County,9,1,2009-2011,Violent crime rate,43,2660.666667,892816.3333,298.0082876,,,2014,9001
+CT,Hartford County,9,3,2003-2005,Violent crime rate,43,3123.333333,847343.3333,368.6030456,,,,9003
+CT,Hartford County,9,3,2004-2006,Violent crime rate,43,2915.333333,848081,343.756473,,,,9003
+CT,Hartford County,9,3,2005-2007,Violent crime rate,43,2836,848864.3333,334.0934339,,,2010,9003
+CT,Hartford County,9,3,2006-2008,Violent crime rate,43,2849,855541.6667,333.0054059,,,2011,9003
+CT,Hartford County,9,3,2007-2009,Violent crime rate,43,2804,856536,327.3651078,,,2012,9003
+CT,Hartford County,9,3,2008-2010,Violent crime rate,43,2847.666667,861287.6667,330.6289846,,,2013,9003
+CT,Hartford County,9,3,2009-2011,Violent crime rate,43,2847.666667,866747.6667,328.5462166,,,2014,9003
+CT,Litchfield County,9,5,2003-2005,Violent crime rate,43,172.3333333,117446.6667,146.733269,,,,9005
+CT,Litchfield County,9,5,2004-2006,Violent crime rate,43,176.3333333,117715.6667,149.7959773,,,,9005
+CT,Litchfield County,9,5,2005-2007,Violent crime rate,43,179,118002.6667,151.6914872,,,2010,9005
+CT,Litchfield County,9,5,2006-2008,Violent crime rate,43,168,117701.6667,142.7337478,,,2011,9005
+CT,Litchfield County,9,5,2007-2009,Violent crime rate,43,152,117255.3333,129.6316301,,,2012,9005
+CT,Litchfield County,9,5,2008-2010,Violent crime rate,43,145.3333333,117262,123.9389856,,,2013,9005
+CT,Litchfield County,9,5,2009-2011,Violent crime rate,43,141.3333333,117829.6667,119.9471554,,,2014,9005
+CT,Middlesex County,9,7,2003-2005,Violent crime rate,43,93,105822,87.88342689,,,,9007
+CT,Middlesex County,9,7,2004-2006,Violent crime rate,43,95.33333333,106377,89.61836989,,,,9007
+CT,Middlesex County,9,7,2005-2007,Violent crime rate,43,97.33333333,107015,90.95298167,,,2010,9007
+CT,Middlesex County,9,7,2006-2008,Violent crime rate,43,106.6666667,107671.6667,99.06660681,,,2011,9007
+CT,Middlesex County,9,7,2007-2009,Violent crime rate,43,109.3333333,108310.3333,100.9445082,,,2012,9007
+CT,Middlesex County,9,7,2008-2010,Violent crime rate,43,120.6666667,108177.6667,111.5448968,,,2013,9007
+CT,Middlesex County,9,7,2009-2011,Violent crime rate,43,119.6666667,108029,110.7727246,,,2014,9007
+CT,New Haven County,9,9,2003-2005,Violent crime rate,43,2784.666667,794840.6667,350.3427521,,,,9009
+CT,New Haven County,9,9,2004-2006,Violent crime rate,43,2227.666667,754005.6667,295.4442871,,,,9009
+CT,New Haven County,9,9,2005-2007,Violent crime rate,43,2319.666667,753524.3333,307.8423037,,,2010,9009
+CT,New Haven County,9,9,2006-2008,Violent crime rate,43,2834.333333,752959,376.4259851,,,2011,9009
+CT,New Haven County,9,9,2007-2009,Violent crime rate,43,3595,794781,452.3258608,,,2012,9009
+CT,New Haven County,9,9,2008-2010,Violent crime rate,43,3536,799404,442.3295355,,,2013,9009
+CT,New Haven County,9,9,2009-2011,Violent crime rate,43,3353.666667,804650,416.7857661,,,2014,9009
+CT,New London County,9,11,2003-2005,Violent crime rate,43,505.3333333,140832.3333,358.8191159,,,,9011
+CT,New London County,9,11,2004-2006,Violent crime rate,43,451,140967,319.933034,,,,9011
+CT,New London County,9,11,2005-2007,Violent crime rate,43,424,140354.6667,302.0918435,,,2010,9011
+CT,New London County,9,11,2006-2008,Violent crime rate,43,438.3333333,140674,311.5951301,,,2011,9011
+CT,New London County,9,11,2007-2009,Violent crime rate,43,505.6666667,139813.6667,361.6718442,,,2012,9011
+CT,New London County,9,11,2008-2010,Violent crime rate,43,532.3333333,142362.3333,373.928497,,,2013,9011
+CT,New London County,9,11,2009-2011,Violent crime rate,43,556,143820.3333,386.593458,,,2014,9011
+CT,Tolland County,9,13,2003-2005,Violent crime rate,43,,,,,,,9013
+CT,Tolland County,9,13,2004-2006,Violent crime rate,43,,,,,,,9013
+CT,Tolland County,9,13,2005-2007,Violent crime rate,43,,,,,,2010,9013
+CT,Tolland County,9,13,2006-2008,Violent crime rate,43,,,,,,2011,9013
+CT,Tolland County,9,13,2007-2009,Violent crime rate,43,,,,,,2012,9013
+CT,Tolland County,9,13,2008-2010,Violent crime rate,43,,,,,,2013,9013
+CT,Tolland County,9,13,2009-2011,Violent crime rate,43,,,,,,2014,9013
+CT,Windham County,9,15,2003-2005,Violent crime rate,43,,,,,,,9015
+CT,Windham County,9,15,2004-2006,Violent crime rate,43,,,,,,,9015
+CT,Windham County,9,15,2005-2007,Violent crime rate,43,,,,,,2010,9015
+CT,Windham County,9,15,2006-2008,Violent crime rate,43,,,,,,2011,9015
+CT,Windham County,9,15,2007-2009,Violent crime rate,43,,,,,,2012,9015
+CT,Windham County,9,15,2008-2010,Violent crime rate,43,,,,,,2013,9015
+CT,Windham County,9,15,2009-2011,Violent crime rate,43,,,,,,2014,9015

@@ -14,6 +14,10 @@ spring:
     jdbc:
       initialize-schema: always
 
+  cloud:
+    task:
+      closecontext-enabled: true
+
 #  threads:
 #    virtual:
 #      enabled: true
@@ -53,7 +57,7 @@ management:
         enabled: false
 #        step: 10s
         rsocket:
-          enabled: false
+          enabled: true
 #
 #  tracing:
 #    enabled: true
