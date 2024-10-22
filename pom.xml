@@ -12,7 +12,7 @@
 
 	<groupId>com.broadcom.springconsulting</groupId>
 	<artifactId>batch-demo</artifactId>
-	<version>0.0.9-SNAPSHOT</version>
+	<version>0.0.10-SNAPSHOT</version>
 	<name>batch-demo</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
