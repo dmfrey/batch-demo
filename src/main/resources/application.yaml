@@ -14,9 +14,9 @@ spring:
     jdbc:
       initialize-schema: always
 
-  threads:
-    virtual:
-      enabled: true
+#  threads:
+#    virtual:
+#      enabled: true
 
 #management:
 #
