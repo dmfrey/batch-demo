@@ -57,7 +57,12 @@ management:
         enabled: true
 #        step: 10s
         rsocket:
+          enabled: false
+        pushgateway:
           enabled: true
+          base-url: prometheus-pushgateway.monitor.svc.cluster.local:9091
+          job: ${spring.application.name}
+
 #
 #  tracing:
 #    enabled: true
