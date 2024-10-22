@@ -12,7 +12,7 @@
 
 	<groupId>com.broadcom.springconsulting</groupId>
 	<artifactId>batch-demo</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>batch-demo</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -72,6 +72,10 @@
 		</dependency>
 
 		<!-- Observability dependencies -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus-simpleclient</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>io.micrometer.prometheus</groupId>
 			<artifactId>prometheus-rsocket-spring</artifactId>

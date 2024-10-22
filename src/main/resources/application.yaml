@@ -18,7 +18,7 @@ spring:
 #    virtual:
 #      enabled: true
 
-#management:
+management:
 #
 #  endpoints:
 #    web.exposure.include: '*'
@@ -47,10 +47,13 @@ spring:
 #      org: ${spring.application.org}
 #      profiles: ${spring.profiles.active}
 #
-#  prometheus:
-#    metrics:
-#      export:
+  prometheus:
+    metrics:
+      export:
+        enabled: false
 #        step: 10s
+        rsocket:
+          enabled: false
 #
 #  tracing:
 #    enabled: true
