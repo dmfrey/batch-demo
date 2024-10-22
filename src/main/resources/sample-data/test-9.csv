@@ -1,0 +1,15 @@
+State,County,State code,County code,Year span,Measure name,Measure id,Numerator,Denominator,Raw value,Confidence Interval Lower Bound,Confidence Interval Upper Bound,Data Release Year,fipscode
+DC,District of Columbia,11,0,2003-2005,Violent crime rate,43,8228.666667,555809.3333,1480.483715,,,,11000
+DC,District of Columbia,11,0,2004-2006,Violent crime rate,43,8132.333333,561858,1447.400114,,,,11000
+DC,District of Columbia,11,0,2005-2007,Violent crime rate,43,8376.333333,573447.6667,1460.697082,,,2010,11000
+DC,District of Columbia,11,0,2006-2008,Violent crime rate,43,8535.333333,587218.3333,1453.51956,,,2011,11000
+DC,District of Columbia,11,0,2007-2009,Violent crime rate,43,8307.666667,593260.6667,1400.340042,,,2012,11000
+DC,District of Columbia,11,0,2008-2010,Violent crime rate,43,8208,597737.6667,1373.177643,,,2013,11000
+DC,District of Columbia,11,0,2009-2011,Violent crime rate,43,7849.333333,606458.6667,1294.28991,,,2014,11000
+DC,District of Columbia,11,1,2003-2005,Violent crime rate,43,8228.666667,555809.3333,1480.483715,,,,11001
+DC,District of Columbia,11,1,2004-2006,Violent crime rate,43,8132.333333,561858,1447.400114,,,,11001
+DC,District of Columbia,11,1,2005-2007,Violent crime rate,43,8376.333333,573447.6667,1460.697082,,,2010,11001
+DC,District of Columbia,11,1,2006-2008,Violent crime rate,43,8535.333333,587218.3333,1453.51956,,,2011,11001
+DC,District of Columbia,11,1,2007-2009,Violent crime rate,43,8307.666667,593260.6667,1400.340042,,,2012,11001
+DC,District of Columbia,11,1,2008-2010,Violent crime rate,43,8208,597737.6667,1373.177643,,,2013,11001
+DC,District of Columbia,11,1,2009-2011,Violent crime rate,43,7849.333333,606458.6667,1294.28991,,,2014,11001
