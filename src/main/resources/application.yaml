@@ -54,7 +54,7 @@ management:
   prometheus:
     metrics:
       export:
-        enabled: false
+        enabled: true
 #        step: 10s
         rsocket:
           enabled: true
@@ -70,3 +70,10 @@ management:
 ##        url: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/metrics
 #    tracing:
 #      endpoint: http://otelcol-dm-opentelemetry-collector.monitor.svc.cluster.local:4318/v1/traces
+
+micrometer.prometheus.rsocket:
+  host: spring-cloud-dataflow-prometheus-proxy.dataflow.svc.cluster.local  #required
+  port: 7001
+  max-retries: 10000 # default is Long.MAX_VALUE
+  first-backoff: 10s
+  max-backoff: 10m
