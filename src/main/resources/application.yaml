@@ -1,3 +1,5 @@
+debug: true
+
 logging.level:
   liquibase: info
   io.micrometer.prometheus: debug
