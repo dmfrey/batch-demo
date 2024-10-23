@@ -1,0 +1,43 @@
+State,County,State code,County code,Year span,Measure name,Measure id,Numerator,Denominator,Raw value,Confidence Interval Lower Bound,Confidence Interval Upper Bound,Data Release Year,fipscode
+HI,Hawaii,15,0,2003-2005,Violent crime rate,43,3328.833333,1262349.667,263.7013675,,,,15000
+HI,Hawaii,15,0,2004-2006,Violent crime rate,43,3447.666667,1273049.833,270.8194586,,,,15000
+HI,Hawaii,15,0,2005-2007,Violent crime rate,43,3537.666667,1283515,275.6233209,,,2010,15000
+HI,Hawaii,15,0,2006-2008,Violent crime rate,43,3570.666667,1285680.167,277.7258885,,,2011,15000
+HI,Hawaii,15,0,2007-2009,Violent crime rate,43,3534.666667,1288921.333,274.2344762,,,2012,15000
+HI,Hawaii,15,0,2008-2010,Violent crime rate,43,3554.333333,1314559,270.3821839,,,2013,15000
+HI,Hawaii,15,0,2009-2011,Violent crime rate,43,3539.333333,1343429.667,263.4550525,,,2014,15000
+HI,Hawaii County,15,1,2003-2005,Violent crime rate,43,292.5,157728,185.4458308,,,,15001
+HI,Hawaii County,15,1,2004-2006,Violent crime rate,43,361,163863.5,220.3053151,,,,15001
+HI,Hawaii County,15,1,2005-2007,Violent crime rate,43,441,170629,258.4554794,,,2010,15001
+HI,Hawaii County,15,1,2006-2008,Violent crime rate,43,441,172316.3333,255.9246657,,,2011,15001
+HI,Hawaii County,15,1,2007-2009,Violent crime rate,43,453,175688,257.8434498,,,2012,15001
+HI,Hawaii County,15,1,2008-2010,Violent crime rate,43,474.3333333,179843.3333,263.748077,,,2013,15001
+HI,Hawaii County,15,1,2009-2011,Violent crime rate,43,490.6666667,183630.6667,267.2030089,,,2014,15001
+HI,Honolulu County,15,3,2003-2005,Violent crime rate,43,2561,906803.6667,282.4205607,,,,15003
+HI,Honolulu County,15,3,2004-2006,Violent crime rate,43,2607.333333,909267.6667,286.7509127,,,,15003
+HI,Honolulu County,15,3,2005-2007,Violent crime rate,43,2642.666667,909039,290.7099329,,,2010,15003
+HI,Honolulu County,15,3,2006-2008,Violent crime rate,43,2644.333333,908315,291.125142,,,2011,15003
+HI,Honolulu County,15,3,2007-2009,Violent crime rate,43,2575,906458.6667,284.0725225,,,2012,15003
+HI,Honolulu County,15,3,2008-2010,Violent crime rate,43,2553.333333,922256.6667,276.8571294,,,2013,15003
+HI,Honolulu County,15,3,2009-2011,Violent crime rate,43,2485,941295.3333,263.9979093,,,2014,15003
+HI,Kalawao County,15,5,2003-2005,Violent crime rate,43,,,,,,,15005
+HI,Kalawao County,15,5,2004-2006,Violent crime rate,43,,,,,,,15005
+HI,Kalawao County,15,5,2005-2007,Violent crime rate,43,,,,,,2010,15005
+HI,Kalawao County,15,5,2006-2008,Violent crime rate,43,,,,,,2011,15005
+HI,Kalawao County,15,5,2007-2009,Violent crime rate,43,,,,,,2012,15005
+HI,Kalawao County,15,5,2008-2010,Violent crime rate,43,,,,,,2013,15005
+HI,Kalawao County,15,5,2009-2011,Violent crime rate,43,,,,,,2014,15005
+HI,Kauai County,15,7,2003-2005,Violent crime rate,43,198,60779,325.7704141,,,,15007
+HI,Kauai County,15,7,2004-2006,Violent crime rate,43,208,61000,340.9836066,,,,15007
+HI,Kauai County,15,7,2005-2007,Violent crime rate,43,168,63041,266.4932346,,,2010,15007
+HI,Kauai County,15,7,2006-2008,Violent crime rate,43,188,63102.5,297.9279743,,,2011,15007
+HI,Kauai County,15,7,2007-2009,Violent crime rate,43,196,63465.66667,308.8283954,,,2012,15007
+HI,Kauai County,15,7,2008-2010,Violent crime rate,43,222,64815.66667,342.5097842,,,2013,15007
+HI,Kauai County,15,7,2009-2011,Violent crime rate,43,231.3333333,66363.33333,348.5860666,,,2014,15007
+HI,Maui County,15,9,2003-2005,Violent crime rate,43,277.3333333,137039,202.3754795,,,,15009
+HI,Maui County,15,9,2004-2006,Violent crime rate,43,271.3333333,138918.6667,195.3181238,,,,15009
+HI,Maui County,15,9,2005-2007,Violent crime rate,43,286,140806,203.1163445,,,2010,15009
+HI,Maui County,15,9,2006-2008,Violent crime rate,43,297.3333333,141946.3333,209.4688368,,,2011,15009
+HI,Maui County,15,9,2007-2009,Violent crime rate,43,310.6666667,143309,216.7809884,,,2012,15009
+HI,Maui County,15,9,2008-2010,Violent crime rate,43,304.6666667,147643.3333,206.3531484,,,2013,15009
+HI,Maui County,15,9,2009-2011,Violent crime rate,43,332.3333333,152140.3333,218.4386783,,,2014,15009
