@@ -65,6 +65,7 @@ management:
           enabled: true
           base-url: http://prometheus-pushgateway.monitor.svc.cluster.local:9091
           job: ${spring.application.name}
+          push-rate: 5s
 
 #
 #  tracing:
