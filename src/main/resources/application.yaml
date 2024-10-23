@@ -1,5 +1,6 @@
 logging.level:
   liquibase: info
+  io.micrometer.prometheus: debug
   org.springframework.batch: info
   org.springframework.cloud.task: debug
   org.springframework.jdbc: info
@@ -60,7 +61,7 @@ management:
           enabled: false
         pushgateway:
           enabled: true
-          base-url: prometheus-pushgateway.monitor.svc.cluster.local:9091
+          base-url: http://prometheus-pushgateway.monitor.svc.cluster.local:9091
           job: ${spring.application.name}
 
 #
