@@ -19,6 +19,7 @@ spring:
 
   cloud:
     task:
+      name: ${spring.application.name}
       closecontext-enabled: true
 
 #  threads:
