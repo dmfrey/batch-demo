@@ -20,6 +20,7 @@ spring:
   cloud:
     task:
       name: ${spring.application.name}
+      external-execution-id: ${spring.application.name}
       closecontext-enabled: true
 
 #  threads:
