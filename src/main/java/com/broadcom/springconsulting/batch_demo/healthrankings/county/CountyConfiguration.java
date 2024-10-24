@@ -9,6 +9,7 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -26,6 +27,18 @@ public class CountyConfiguration {
                 .processor( processor )
                 .writer( writer )
                 .build();
+    }
+
+    @Bean
+    CountyStepExecutionListener countyStepExecutionListener( final JdbcTemplate jdbcTemplate) {
+
+        return new CountyStepExecutionListener( jdbcTemplate );
+    }
+
+    @Bean
+    CountyProcessor countyProcessor() {
+
+        return new CountyProcessor();
     }
 
     @Bean

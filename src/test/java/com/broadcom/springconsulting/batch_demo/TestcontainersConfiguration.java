@@ -13,7 +13,7 @@ import org.testcontainers.utility.DockerImageName;
 				"spring.docker.compose.enabled=false"
 		}
 )
-class TestcontainersConfiguration {
+public class TestcontainersConfiguration {
 
 	@Bean
 	@ServiceConnection

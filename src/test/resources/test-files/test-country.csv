@@ -1,0 +1,2 @@
+State,County,State code,County code,Year span,Measure name,Measure id,Numerator,Denominator,Raw value,Confidence Interval Lower Bound,Confidence Interval Upper Bound,Data Release Year,fipscode
+US,United States,0,0,2003-2005,Violent crime rate,43,1328750.667,274877117,483.3980657,,,,0

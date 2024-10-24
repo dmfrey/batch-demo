@@ -5,11 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component
 public class CountyMeasureProcessor implements ItemProcessor<InputRow, CountyMeasure> {
 
     private static final Logger log = LoggerFactory.getLogger( CountyMeasureProcessor.class );
@@ -18,14 +16,26 @@ public class CountyMeasureProcessor implements ItemProcessor<InputRow, CountyMea
     public CountyMeasure process( @NonNull InputRow input ) throws Exception {
 
         log.debug( "process : InputRow [{}]", input );
-        if( null == input.countyCode() ) {
-            log.error( "process : countyCode is null, skipping" );
+        if( null == input.stateCode() || null == input.countyCode() ) {
+            log.error( "process : stateCode or countyCode is null, skipping" );
 
             return null;
         }
 
         if( null == input.measureId() ) {
             log.error( "process : measureId is null, skipping" );
+
+            return null;
+        }
+
+        if( input.stateCode().equals( 0L ) ) {
+            log.warn( "process : stateCode is 0, country measure, skipping" );
+
+            return null;
+        }
+
+        if( input.countyCode().equals( 0L ) ) {
+            log.warn( "process : countyCode is 0, state measure, skipping" );
 
             return null;
         }

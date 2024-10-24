@@ -2,6 +2,8 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure;
 
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
@@ -17,7 +19,16 @@ import javax.sql.DataSource;
 public class CountyMeasureConfiguration {
 
     @Bean
-    public Step countyMeasureStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager,
+    Flow countyMeasureFlow( Step countyMeasureStep ) {
+
+        return new FlowBuilder<Flow>("countyMeasureFlow" )
+                .start( countyMeasureStep )
+                .build();
+
+    }
+
+    @Bean
+    public Step countyMeasureStep( JobRepository jobRepository, DataSourceTransactionManager transactionManager,
                                   FlatFileItemReader<InputRow> reader, CountyMeasureProcessor processor, ItemWriter<CountyMeasure> writer ) {
 
         return new StepBuilder("county measure step", jobRepository )
@@ -26,6 +37,12 @@ public class CountyMeasureConfiguration {
                 .processor( processor )
                 .writer( writer )
                 .build();
+    }
+
+    @Bean
+    CountyMeasureProcessor processor() {
+
+        return new CountyMeasureProcessor();
     }
 
     @Bean

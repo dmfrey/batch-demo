@@ -11,6 +11,7 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -29,8 +30,8 @@ public class StateConfiguration {
 
     @Bean
     public Step stateStep( JobRepository jobRepository, DataSourceTransactionManager transactionManager,
-                      FlatFileItemReader<InputRow> reader, StateProcessor processor, ItemWriter<State> writer,
-                        StateStepExecutionListener listener ) {
+                           FlatFileItemReader<InputRow> reader, StateProcessor processor, ItemWriter<State> writer,
+                           StateStepExecutionListener listener ) {
 
         return new StepBuilder("state step", jobRepository )
                 .<InputRow, State> chunk(100, transactionManager )
@@ -42,7 +43,19 @@ public class StateConfiguration {
     }
 
     @Bean
-    ItemWriter<State> stateWriter(DataSource dataSource ) {
+    StateStepExecutionListener stateStepExecutionListener( final JdbcTemplate jdbcTemplate ) {
+
+        return new StateStepExecutionListener( jdbcTemplate );
+    }
+
+    @Bean
+    StateProcessor stateProcessor() {
+
+        return new StateProcessor();
+    }
+
+    @Bean
+    ItemWriter<State> stateWriter( DataSource dataSource ) {
 
         return new JdbcBatchItemWriterBuilder<State>()
                 .sql( "INSERT INTO state (state_code, abbreviation) VALUES (:stateCode, :abbreviation) ON CONFLICT (state_code) DO UPDATE SET state_code = :stateCode" )
