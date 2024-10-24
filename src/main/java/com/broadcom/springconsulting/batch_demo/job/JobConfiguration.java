@@ -57,9 +57,6 @@ public class JobConfiguration {
     @StepScope
     FlatFileItemReader<InputRow> reader( @Value( "#{jobParameters['localFilePath'] ?: 'src/main/resources/sample-data/test.csv'}" ) String filePath ) {
 
-//        if( !filePath.matches( "[a-z]+:.*") ) {
-//            filePath = "file:" + filePath;
-//        }
         log.info( "reader : processing file [{}]", filePath );
 
         return new FlatFileItemReaderBuilder<InputRow>()
