@@ -1,4 +1,4 @@
-package com.broadcom.springconsulting.batch_demo.healthrankings.county;
+package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,13 +9,13 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class CountyStepExecutionListener implements StepExecutionListener {
+public class CountryStepExecutionListener implements StepExecutionListener {
 
-    private static final Logger log = LoggerFactory.getLogger( CountyStepExecutionListener.class );
+    private static final Logger log = LoggerFactory.getLogger( CountryStepExecutionListener.class );
 
     private final JdbcTemplate jdbcTemplate;
 
-    public CountyStepExecutionListener( final JdbcTemplate jdbcTemplate ) {
+    public CountryStepExecutionListener(final JdbcTemplate jdbcTemplate ) {
 
         this.jdbcTemplate = jdbcTemplate;
 
@@ -27,8 +27,8 @@ public class CountyStepExecutionListener implements StepExecutionListener {
         if( stepExecution.getStatus() == BatchStatus.COMPLETED ) {
 
             jdbcTemplate
-                    .query( "SELECT county_code, name, fips_code, state_code FROM county", new DataClassRowMapper<>( County.class ) )
-                    .forEach( county -> log.info( "Found <{{}}> in the database.", county ) );
+                    .query( "SELECT country_code, abbreviation, name, fips_code FROM country", new DataClassRowMapper<>( Country.class ) )
+                    .forEach( country -> log.info( "Found <{{}}> in the database.", country ) );
 
         }
 

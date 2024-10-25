@@ -8,9 +8,7 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
-@Component
 public class MeasureStepExecutionListener implements StepExecutionListener {
 
     private static final Logger log = LoggerFactory.getLogger( MeasureStepExecutionListener.class );

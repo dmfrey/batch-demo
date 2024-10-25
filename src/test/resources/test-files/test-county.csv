@@ -1,0 +1,2 @@
+State,County,State code,County code,Year span,Measure name,Measure id,Numerator,Denominator,Raw value,Confidence Interval Lower Bound,Confidence Interval Upper Bound,Data Release Year,fipscode
+AL,Autauga County,1,1,2003-2005,Violent crime rate,43,141,46438.66667,303.6262884,,,,1001

@@ -4,6 +4,27 @@ databaseChangeLog:
       id: 1
       author: test
       changes:
+
+        - createTable:
+            tableName: country
+            schemaName: public
+            columns:
+              - column:
+                  name: country_code
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: abbreviation
+                  type: varchar(2)
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: fips_code
+                  type: bigint
+
         - createTable:
             tableName: state
             schemaName: public
@@ -17,6 +38,13 @@ databaseChangeLog:
               - column:
                   name: abbreviation
                   type: varchar(2)
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: fips_code
+                  type: bigint
+
         - createTable:
             tableName: county
             schemaName: public
@@ -40,6 +68,7 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_county_state
                     references: state(state_code)
+
         - createTable:
             tableName: measure
             schemaName: public
@@ -53,6 +82,99 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(100)
+
+        - createTable:
+            tableName: country_measure
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: year_span
+                  type: varchar(100)
+              - column:
+                  name: numerator
+                  type: double
+              - column:
+                  name: denominator
+                  type: double
+              - column:
+                  name: raw_value
+                  type: double
+              - column:
+                  name: confidence_lower_bounds
+                  type: double
+              - column:
+                  name: confidence_upper_bounds
+                  type: double
+              - column:
+                  name: release_year
+                  type: varchar(100)
+              - column:
+                  name: country_code
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_country_measure_country
+                    references: country(country_code)
+              - column:
+                  name: measure_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_county_measure_measure
+                    references: measure(measure_id)
+
+        - createTable:
+            tableName: state_measure
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: year_span
+                  type: varchar(100)
+              - column:
+                  name: numerator
+                  type: double
+              - column:
+                  name: denominator
+                  type: double
+              - column:
+                  name: raw_value
+                  type: double
+              - column:
+                  name: confidence_lower_bounds
+                  type: double
+              - column:
+                  name: confidence_upper_bounds
+                  type: double
+              - column:
+                  name: release_year
+                  type: varchar(100)
+              - column:
+                  name: state_code
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_state_measure_state
+                    references: state(state_code)
+              - column:
+                  name: measure_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_county_measure_measure
+                    references: measure(measure_id)
+
         - createTable:
             tableName: county_measure
             schemaName: public
@@ -68,19 +190,19 @@ databaseChangeLog:
                   type: varchar(100)
               - column:
                   name: numerator
-                  type: bigint
+                  type: double
               - column:
                   name: denominator
-                  type: bigint
+                  type: double
               - column:
                   name: raw_value
-                  type: bigint
+                  type: double
               - column:
                   name: confidence_lower_bounds
-                  type: bigint
+                  type: double
               - column:
                   name: confidence_upper_bounds
-                  type: bigint
+                  type: double
               - column:
                   name: release_year
                   type: varchar(100)

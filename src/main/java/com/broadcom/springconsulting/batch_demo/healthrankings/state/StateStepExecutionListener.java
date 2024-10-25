@@ -8,9 +8,7 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
-@Component
 public class StateStepExecutionListener implements StepExecutionListener {
 
     private static final Logger log = LoggerFactory.getLogger( StateStepExecutionListener.class );
@@ -29,7 +27,7 @@ public class StateStepExecutionListener implements StepExecutionListener {
         if( stepExecution.getStatus() == BatchStatus.COMPLETED ) {
 
             jdbcTemplate
-                    .query( "SELECT state_code, abbreviation FROM state ORDER BY abbreviation", new DataClassRowMapper<>( State.class ) )
+                    .query( "SELECT state_code, abbreviation, name, fips_code FROM state ORDER BY abbreviation", new DataClassRowMapper<>( State.class ) )
                     .forEach( state -> log.info( "Found <{{}}> in the database.", state ) );
 
         }

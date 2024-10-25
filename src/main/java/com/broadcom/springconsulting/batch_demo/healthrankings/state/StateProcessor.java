@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 
-@Component
 public class StateProcessor implements ItemProcessor<InputRow, State> {
 
     private static final Logger log = LoggerFactory.getLogger( StateProcessor.class );
@@ -22,7 +20,13 @@ public class StateProcessor implements ItemProcessor<InputRow, State> {
             return null;
         }
 
-        var state = new State( input.stateCode(), input.state() );
+        if( input.countyCode() != 0 ) {
+            log.warn( "process : countyCode is not 0, skipping" );
+
+            return null;
+        }
+
+        var state = new State( input.stateCode(), input.state(), input.county(), input.fipsCode() );
         log.debug( "process : State [{}]", state );
 
         return state;

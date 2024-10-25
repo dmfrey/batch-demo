@@ -1,0 +1,2 @@
+State,County,State code,County code,Year span,Measure name,Measure id,Numerator,Denominator,Raw value,Confidence Interval Lower Bound,Confidence Interval Upper Bound,Data Release Year,fipscode
+AL,Alabama,1,0,2003-2005,Violent crime rate,43,18174.83333,4221248.167,430.5559071,,,,1000

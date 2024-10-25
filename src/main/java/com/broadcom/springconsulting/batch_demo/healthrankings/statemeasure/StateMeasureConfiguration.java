@@ -1,4 +1,4 @@
-package com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure;
+package com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure;
 
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
@@ -18,23 +18,23 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-public class CountyMeasureConfiguration {
+public class StateMeasureConfiguration {
 
     @Bean
-    Flow countyMeasureFlow( Step countyMeasureStep ) {
+    Flow stateMeasureFlow( Step stateMeasureStep ) {
 
-        return new FlowBuilder<Flow>("countyMeasureFlow" )
-                .start( countyMeasureStep )
+        return new FlowBuilder<Flow>("stateMeasureFlow" )
+                .start( stateMeasureStep )
                 .build();
 
     }
 
     @Bean
-    public Step countyMeasureStep( JobRepository jobRepository, DataSourceTransactionManager transactionManager,
-                                  FlatFileItemReader<InputRow> reader, CountyMeasureProcessor processor, ItemWriter<CountyMeasure> writer ) {
+    public Step stateMeasureStep( JobRepository jobRepository, DataSourceTransactionManager transactionManager,
+                                  FlatFileItemReader<InputRow> reader, StateMeasureProcessor processor, ItemWriter<StateMeasure> writer ) {
 
-        return new StepBuilder("county measure step", jobRepository )
-                .<InputRow, CountyMeasure> chunk(100, transactionManager )
+        return new StepBuilder("state measure step", jobRepository )
+                .<InputRow, StateMeasure> chunk(100, transactionManager )
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
@@ -42,17 +42,17 @@ public class CountyMeasureConfiguration {
     }
 
     @Bean
-    CountyMeasureProcessor processor() {
+    StateMeasureProcessor stateMeasureprocessor() {
 
-        return new CountyMeasureProcessor();
+        return new StateMeasureProcessor();
     }
 
     @Bean
     @StepScope
-    JdbcBatchItemWriter<CountyMeasure> countyMeasureWriter( final DataSource dataSource ) {
+    JdbcBatchItemWriter<StateMeasure> stateMeasureWriter( final DataSource dataSource ) {
 
-        return new JdbcBatchItemWriterBuilder<CountyMeasure>()
-                .sql( "INSERT INTO county_measure (id, year_span, numerator, denominator, raw_value, confidence_lower_bounds, confidence_upper_bounds, release_year, county_code, measure_id) VALUES (:id, :yearSpan, :numerator, :denominator, :rawValue, :confidenceLowerBounds, :confidenceUpperBounds, :releaseYear, :countyCode, :measureId)" )
+        return new JdbcBatchItemWriterBuilder<StateMeasure>()
+                .sql( "INSERT INTO state_measure (id, year_span, numerator, denominator, raw_value, confidence_lower_bounds, confidence_upper_bounds, release_year, state_code, measure_id) VALUES (:id, :yearSpan, :numerator, :denominator, :rawValue, :confidenceLowerBounds, :confidenceUpperBounds, :releaseYear, :stateCode, :measureId)" )
                 .dataSource( dataSource )
                 .beanMapped()
                 .build();

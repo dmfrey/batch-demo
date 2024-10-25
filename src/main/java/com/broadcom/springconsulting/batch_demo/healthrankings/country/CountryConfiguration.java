@@ -1,4 +1,4 @@
-package com.broadcom.springconsulting.batch_demo.healthrankings.measure;
+package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
@@ -19,25 +19,23 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-public class MeasureConfiguration {
+public class CountryConfiguration {
 
     @Bean
-    Flow measureFlow( Step measureStep ) {
+    Flow countryFlow( Step countryStep ) {
 
-        return new FlowBuilder<Flow>("measureFlow" )
-                .start( measureStep )
+        return new FlowBuilder<Flow>("countryFlow" )
+                .start( countryStep )
                 .build();
 
     }
 
     @Bean
-    public Step measureStep( JobRepository jobRepository, DataSourceTransactionManager transactionManager,
-                            FlatFileItemReader<InputRow> reader, MeasureProcessor processor, ItemWriter<Measure> writer,
-                             MeasureStepExecutionListener listener ) {
+    public Step countryStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager,
+                           FlatFileItemReader<InputRow> reader, CountryProcessor processor, ItemWriter<Country> writer ) {
 
-        return new StepBuilder( "measure step", jobRepository )
-                .<InputRow, Measure> chunk(100, transactionManager )
-                .listener( listener )
+        return new StepBuilder("country step", jobRepository )
+                .<InputRow, Country> chunk(100, transactionManager )
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
@@ -45,23 +43,23 @@ public class MeasureConfiguration {
     }
 
     @Bean
-    MeasureStepExecutionListener measureStepExecutionListener( final JdbcTemplate jdbcTemplate ) {
+    CountryStepExecutionListener countryStepExecutionListener( final JdbcTemplate jdbcTemplate ) {
 
-        return new MeasureStepExecutionListener( jdbcTemplate );
+        return new CountryStepExecutionListener( jdbcTemplate );
     }
 
     @Bean
-    MeasureProcessor measureProcessor() {
+    CountryProcessor countryProcessor() {
 
-        return new MeasureProcessor();
+        return new CountryProcessor();
     }
 
     @Bean
     @StepScope
-    JdbcBatchItemWriter<Measure> measureWriter( final DataSource dataSource ) {
+    JdbcBatchItemWriter<Country> countryWriter( final DataSource dataSource ) {
 
-        return new JdbcBatchItemWriterBuilder<Measure>()
-                .sql( "INSERT INTO measure (measure_id, name) VALUES (:measureId, :name) ON CONFLICT (measure_id) DO UPDATE set measure_id = :measureId" )
+        return new JdbcBatchItemWriterBuilder<Country>()
+                .sql( "INSERT INTO country (country_code, abbreviation, name, fips_code) VALUES (:countryCode, :abbreviation, :name, :fipsCode) ON CONFLICT (country_code) DO UPDATE set country_code = :countryCode" )
                 .dataSource( dataSource )
                 .beanMapped()
                 .build();
