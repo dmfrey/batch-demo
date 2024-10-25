@@ -35,11 +35,11 @@ public class JobConfiguration {
     }
 
     @Bean
-    Flow parallelMeasureSteps( Flow countyMeasureFlow ) {
+    Flow parallelMeasureSteps( Flow countryMeasureFlow, Flow stateMeasureFlow, Flow countyMeasureFlow ) {
 
         return new FlowBuilder<Flow>("parallelMeasureSteps" )
                 .split( new SimpleAsyncTaskExecutor() )
-                .add( countyMeasureFlow )
+                .add( countryMeasureFlow, stateMeasureFlow, countyMeasureFlow )
                 .build();
     }
 
