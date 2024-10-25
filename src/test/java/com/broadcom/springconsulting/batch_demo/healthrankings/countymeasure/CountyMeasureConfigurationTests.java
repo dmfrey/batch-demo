@@ -5,8 +5,8 @@ import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.item.Chunk;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
@@ -19,6 +19,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.jdbc.AutoConfigureDataJdbc;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -26,8 +27,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.sql.DataSource;
 import java.util.UUID;
-import java.util.function.BiPredicate;
 
+import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
+import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.isType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
@@ -44,6 +46,7 @@ import static org.assertj.core.api.Assertions.assertThat;
                 "spring.batch.jdbc.initialize-schema=always"
         }
 )
+@DirtiesContext
 public class CountyMeasureConfigurationTests {
 
     @Autowired
@@ -54,6 +57,9 @@ public class CountyMeasureConfigurationTests {
 
     @Autowired
     private FlatFileItemReader<InputRow> reader;
+
+    @Autowired
+    private JdbcBatchItemWriter<CountyMeasure> writer;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -79,9 +85,9 @@ public class CountyMeasureConfigurationTests {
     }
 
     @Test
-    void testCountyMeasureStep() throws Exception {
+    void testCountyMeasureReaderStep() throws Exception {
 
-        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters() );
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-county.csv" ) );
 
         StepScopeTestUtils.doInStepScope( stepExecution, () -> {
 
@@ -104,36 +110,48 @@ public class CountyMeasureConfigurationTests {
             return null;
         });
 
-        var expected = new CountyMeasure( null, "2003-2005", 141.0, 46438.66667, 303.6262884, 0.0, 0.0, "", 1L, 43L );
-
-        this.jdbcTemplate.query(
-                "SELECT * FROM county_measure WHERE county_code = 1 and measure_id = 43",
-                        ( rs, rowNum ) ->
-                                new CountyMeasure(
-                                        rs.getObject( "id", UUID.class ), rs.getString( "year_span" ),
-                                        rs.getDouble( "numerator" ), rs.getDouble( "denominator" ), rs.getDouble( "raw_value" ),
-                                        rs.getDouble( "confidence_lower_bounds" ), rs.getDouble( "confidence_upper_bounds" ), rs.getString( "release_year" ),
-                                        rs.getLong( "county_code" ), rs.getLong( "measure_id" )
-                                )
-                )
-                .forEach( countryMeasure ->
-                        assertThat( countryMeasure )
-                                .usingRecursiveComparison()
-                                .withEqualsForFields( isType( UUID.class ), "id" )
-                                .isEqualTo( expected ) );
-
     }
 
-    private JobParameters defaultJobParameters() {
+    @Test
+    void testCountyMeasureWriterStep() throws Exception {
 
-        var paramsBuilder = new JobParametersBuilder();
-        paramsBuilder.addString( "localFilePath", "src/test/resources/test-files/test-county.csv" );
+        this.jdbcTemplate.update( "INSERT INTO state (state_code, abbreviation, name, fips_code) VALUES (1, 'AL', 'ALABAMA', 1000)" );
+        this.jdbcTemplate.update( "INSERT INTO county (county_code, name, fips_code, state_code) VALUES (1, 'Autauga County', 1001, 1)" );
+        this.jdbcTemplate.update( "INSERT INTO measure (measure_id, name) VALUES (43, 'Violent crime rate')" );
 
-        return paramsBuilder.toJobParameters();
-    }
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-county.csv" ) );
 
-    <A, B, T extends Class<?>> BiPredicate<A, B> isType(T type) {
-        return (a, b) -> type.isInstance(a) && type.isInstance(b);
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeCountyMeasureId = UUID.randomUUID();
+            var fakeCountyMeasure = new CountyMeasure( fakeCountyMeasureId, "2003-2005", 141.0, 46438.66667, 303.6262884, 0.0, 0.0, "", 1L, 43L );
+
+            this.writer.write( Chunk.of( fakeCountyMeasure ) );
+
+            int actualCount = this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM county_measure", Integer.class );
+            assertThat( actualCount ).isEqualTo( 1 );
+
+            var expected = new CountyMeasure( fakeCountyMeasureId, "2003-2005", 141.0, 46438.66667, 303.6262884, 0.0, 0.0, "", 1L, 43L );
+
+            this.jdbcTemplate.query(
+                            "SELECT * FROM county_measure WHERE county_code = 1 and measure_id = 43",
+                            ( rs, rowNum ) ->
+                                    new CountyMeasure(
+                                            rs.getObject( "id", UUID.class ), rs.getString( "year_span" ),
+                                            rs.getDouble( "numerator" ), rs.getDouble( "denominator" ), rs.getDouble( "raw_value" ),
+                                            rs.getDouble( "confidence_lower_bounds" ), rs.getDouble( "confidence_upper_bounds" ), rs.getString( "release_year" ),
+                                            rs.getLong( "county_code" ), rs.getLong( "measure_id" )
+                                    )
+                    )
+                    .forEach( countyMeasure -> assertThat( countyMeasure )
+                            .usingRecursiveComparison()
+                            .withEqualsForFields( isType( UUID.class ), "id" )
+                            .isEqualTo( expected ) );
+
+
+            return null;
+        });
+
     }
 
 }

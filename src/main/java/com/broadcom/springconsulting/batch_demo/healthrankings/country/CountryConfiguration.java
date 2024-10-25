@@ -2,11 +2,13 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +55,8 @@ public class CountryConfiguration {
     }
 
     @Bean
-    ItemWriter<Country> countryWriter(DataSource dataSource ) {
+    @StepScope
+    JdbcBatchItemWriter<Country> countryWriter( final DataSource dataSource ) {
 
         return new JdbcBatchItemWriterBuilder<Country>()
                 .sql( "INSERT INTO country (country_code, abbreviation, name, fips_code) VALUES (:countryCode, :abbreviation, :name, :fipsCode) ON CONFLICT (country_code) DO UPDATE set country_code = :countryCode" )

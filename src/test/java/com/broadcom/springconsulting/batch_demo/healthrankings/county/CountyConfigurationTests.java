@@ -1,10 +1,12 @@
-package com.broadcom.springconsulting.batch_demo.healthrankings.country;
+package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -32,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
 @SpringBatchTest
-@SpringJUnitConfig( CountryConfiguration.class )
+@SpringJUnitConfig( CountyConfiguration.class )
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         StepScopeTestExecutionListener.class
@@ -45,7 +47,9 @@ import static org.assertj.core.api.Assertions.assertThat;
         }
 )
 @DirtiesContext
-public class CountryConfigurationTests {
+public class CountyConfigurationTests {
+
+    private static final Logger log = LoggerFactory.getLogger( CountyConfigurationTests.class );
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
@@ -57,7 +61,7 @@ public class CountryConfigurationTests {
     private FlatFileItemReader<InputRow> reader;
 
     @Autowired
-    private JdbcBatchItemWriter<Country> writer;
+    private JdbcBatchItemWriter<County> writer;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -83,18 +87,18 @@ public class CountryConfigurationTests {
     }
 
     @Test
-    void testCountryReaderStep() throws Exception {
+    void testCountyReaderStep() throws Exception {
 
-        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-country.csv" ) );
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-county.csv" ) );
 
         StepScopeTestUtils.doInStepScope( stepExecution, () -> {
 
             var expected =
                     new InputRow(
-                            "US", "United States", 0L, 0L, "2003-2005",
-                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
-                            483.3980657, null, null, "",
-                            0L
+                            "AL", "Autauga County", 1L, 1L, "2003-2005",
+                            "Violent crime rate", 43L, 141.0, 46438.66667,
+                            303.6262884, null, null, "",
+                            1001L
                     );
 
             this.reader.open( stepExecution.getExecutionContext() );
@@ -111,30 +115,32 @@ public class CountryConfigurationTests {
     }
 
     @Test
-    void testCountryWriterStep() throws Exception {
+    void testCountyWriterStep() throws Exception {
 
-        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-country.csv" ) );
+        this.jdbcTemplate.update( "INSERT INTO state (state_code, abbreviation, name, fips_code) VALUES (1, 'AL', 'ALABAMA', 1000)" );
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-county.csv" ) );
 
         StepScopeTestUtils.doInStepScope( stepExecution, () -> {
 
-            var fakeCountry = new Country( 0L, "US", "United States", 0 );
+            var fakeCounty = new County( 1, "Autauga County", 1001, 1 );
 
-            this.writer.write( Chunk.of( fakeCountry ) );
+            this.writer.write( Chunk.of( fakeCounty ) );
 
-            int actualCount = this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM country", Integer.class );
+            int actualCount = this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM county", Integer.class );
             assertThat( actualCount ).isEqualTo( 1 );
 
-            var expected = new Country( 0L, "US", "United States", 0 );
+            var expected = new County( 1, "Autauga County", 1001, 1 );
 
             this.jdbcTemplate.query(
-                            "SELECT * FROM country WHERE country_code = 0",
+                            "SELECT * FROM county WHERE county_code = 1",
                             ( rs, rowNum ) ->
-                                    new Country(
-                                            rs.getLong( "country_code" ), rs.getString( "abbreviation" ),
-                                            rs.getString( "name" ), rs.getLong( "fips_code" )
+                                    new County(
+                                            rs.getLong( "county_code" ), rs.getString( "name" ),
+                                            rs.getLong( "fips_code" ), rs.getLong( "state_code" )
                                     )
                     )
-                    .forEach( country -> assertThat( country ).isEqualTo( expected ));
+                    .forEach( county -> assertThat( county ).isEqualTo( expected ) );
 
             return null;
         });

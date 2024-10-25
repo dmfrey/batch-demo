@@ -98,19 +98,19 @@ databaseChangeLog:
                   type: varchar(100)
               - column:
                   name: numerator
-                  type: bigint
+                  type: double
               - column:
                   name: denominator
-                  type: bigint
+                  type: double
               - column:
                   name: raw_value
-                  type: bigint
+                  type: double
               - column:
                   name: confidence_lower_bounds
-                  type: bigint
+                  type: double
               - column:
                   name: confidence_upper_bounds
-                  type: bigint
+                  type: double
               - column:
                   name: release_year
                   type: varchar(100)
@@ -144,19 +144,19 @@ databaseChangeLog:
                   type: varchar(100)
               - column:
                   name: numerator
-                  type: bigint
+                  type: double
               - column:
                   name: denominator
-                  type: bigint
+                  type: double
               - column:
                   name: raw_value
-                  type: bigint
+                  type: double
               - column:
                   name: confidence_lower_bounds
-                  type: bigint
+                  type: double
               - column:
                   name: confidence_upper_bounds
-                  type: bigint
+                  type: double
               - column:
                   name: release_year
                   type: varchar(100)
@@ -190,19 +190,19 @@ databaseChangeLog:
                   type: varchar(100)
               - column:
                   name: numerator
-                  type: bigint
+                  type: double
               - column:
                   name: denominator
-                  type: bigint
+                  type: double
               - column:
                   name: raw_value
-                  type: bigint
+                  type: double
               - column:
                   name: confidence_lower_bounds
-                  type: bigint
+                  type: double
               - column:
                   name: confidence_upper_bounds
-                  type: bigint
+                  type: double
               - column:
                   name: release_year
                   type: varchar(100)

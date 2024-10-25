@@ -2,9 +2,11 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +44,8 @@ public class CountyConfiguration {
     }
 
     @Bean
-    ItemWriter<County> countyWriter( DataSource dataSource ) {
+    @StepScope
+    JdbcBatchItemWriter<County> countyWriter( final DataSource dataSource ) {
 
         return new JdbcBatchItemWriterBuilder<County>()
                 .sql( "INSERT INTO county (county_code, name, fips_code, state_code) VALUES (:countyCode, :name, :fipsCode, :stateCode) ON CONFLICT (county_code) DO UPDATE set county_code = :countyCode" )

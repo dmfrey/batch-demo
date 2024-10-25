@@ -1,10 +1,12 @@
-package com.broadcom.springconsulting.batch_demo.healthrankings.country;
+package com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -26,13 +28,15 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.sql.DataSource;
+import java.util.UUID;
 
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
+import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.isType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
 @SpringBatchTest
-@SpringJUnitConfig( CountryConfiguration.class )
+@SpringJUnitConfig( CountryMeasureConfiguration.class )
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         StepScopeTestExecutionListener.class
@@ -45,7 +49,9 @@ import static org.assertj.core.api.Assertions.assertThat;
         }
 )
 @DirtiesContext
-public class CountryConfigurationTests {
+public class CountryMeasureConfigurationTests {
+
+    private static final Logger log = LoggerFactory.getLogger( CountryMeasureConfigurationTests.class );
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
@@ -57,7 +63,7 @@ public class CountryConfigurationTests {
     private FlatFileItemReader<InputRow> reader;
 
     @Autowired
-    private JdbcBatchItemWriter<Country> writer;
+    private JdbcBatchItemWriter<CountryMeasure> writer;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -83,18 +89,18 @@ public class CountryConfigurationTests {
     }
 
     @Test
-    void testCountryReaderStep() throws Exception {
+    void testCountryMeasureReaderStep() throws Exception {
 
-        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-country.csv" ) );
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-state.csv" ) );
 
         StepScopeTestUtils.doInStepScope( stepExecution, () -> {
 
             var expected =
                     new InputRow(
-                            "US", "United States", 0L, 0L, "2003-2005",
-                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
-                            483.3980657, null, null, "",
-                            0L
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
                     );
 
             this.reader.open( stepExecution.getExecutionContext() );
@@ -111,30 +117,45 @@ public class CountryConfigurationTests {
     }
 
     @Test
-    void testCountryWriterStep() throws Exception {
+    void testCountryMeasureWriterStep() throws Exception {
 
-        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-country.csv" ) );
+        this.jdbcTemplate.update( "INSERT INTO country (country_code, abbreviation, name, fips_code) VALUES (0, 'US', 'United States', 0)" );
+        this.jdbcTemplate.update( "INSERT INTO measure (measure_id, name) VALUES (43, 'Violent crime rate')" );
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-state.csv" ) );
 
         StepScopeTestUtils.doInStepScope( stepExecution, () -> {
 
-            var fakeCountry = new Country( 0L, "US", "United States", 0 );
+            var fakeCountryMeasureId = UUID.randomUUID();
+            var fakeCountryMeasure = new CountryMeasure( fakeCountryMeasureId, "2003-2005", 18174.83333, 4221248.167, 430.5559071, 0.0, 0.0, "", 0L, 43L );
 
-            this.writer.write( Chunk.of( fakeCountry ) );
+            this.writer.write( Chunk.of( fakeCountryMeasure ) );
 
-            int actualCount = this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM country", Integer.class );
+            int actualCount = this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM country_measure", Integer.class );
             assertThat( actualCount ).isEqualTo( 1 );
 
-            var expected = new Country( 0L, "US", "United States", 0 );
+            var expected = new CountryMeasure( fakeCountryMeasureId, "2003-2005", 18174.83333, 4221248.167, 430.5559071, 0.0, 0.0, "", 0L, 43L );
 
             this.jdbcTemplate.query(
-                            "SELECT * FROM country WHERE country_code = 0",
+                            "SELECT * FROM state_measure WHERE state_code = 1 and measure_id = 43",
                             ( rs, rowNum ) ->
-                                    new Country(
-                                            rs.getLong( "country_code" ), rs.getString( "abbreviation" ),
-                                            rs.getString( "name" ), rs.getLong( "fips_code" )
+                                    new CountryMeasure(
+                                            rs.getObject( "id", UUID.class ), rs.getString( "year_span" ),
+                                            rs.getDouble( "numerator" ), rs.getDouble( "denominator" ), rs.getDouble( "raw_value" ),
+                                            rs.getDouble( "confidence_lower_bounds" ), rs.getDouble( "confidence_upper_bounds" ), rs.getString( "release_year" ),
+                                            rs.getLong( "state_code" ), rs.getLong( "measure_id" )
                                     )
                     )
-                    .forEach( country -> assertThat( country ).isEqualTo( expected ));
+                    .forEach( stateMeasure -> {
+
+                        log.debug( "CountryMeasure: {}", stateMeasure );
+
+                        assertThat( stateMeasure )
+                                .usingRecursiveComparison()
+                                .withEqualsForFields( isType( UUID.class ), "id" )
+                                .isEqualTo( expected );
+
+                    });
 
             return null;
         });

@@ -5,8 +5,8 @@ import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.item.Chunk;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
@@ -19,6 +19,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.jdbc.AutoConfigureDataJdbc;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -26,6 +27,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.sql.DataSource;
 
+import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
@@ -42,6 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
                 "spring.batch.jdbc.initialize-schema=always"
         }
 )
+@DirtiesContext
 public class MeasureConfigurationTests {
 
     @Autowired
@@ -52,6 +55,9 @@ public class MeasureConfigurationTests {
 
     @Autowired
     private FlatFileItemReader<InputRow> reader;
+
+    @Autowired
+    private JdbcBatchItemWriter<Measure> writer;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -77,9 +83,9 @@ public class MeasureConfigurationTests {
     }
 
     @Test
-    void testMeasureStep() throws Exception {
+    void testMeasureReaderStep() throws Exception {
 
-        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters() );
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-state.csv" ) );
 
         StepScopeTestUtils.doInStepScope( stepExecution, () -> {
 
@@ -102,19 +108,36 @@ public class MeasureConfigurationTests {
             return null;
         });
 
-        var expected = new Measure( 43L, "Violent crime rate" );
-
-        this.jdbcTemplate.query( "SELECT * FROM measure WHERE measure_id = 43", ( rs, rowNum ) -> new Measure( rs.getLong( "measure_id" ), rs.getString( "name" ) ) )
-                .forEach( state -> assertThat( state ).isEqualTo( expected ) );
-
     }
 
-    private JobParameters defaultJobParameters() {
+    @Test
+    void testMeasureWriterStep() throws Exception {
 
-        var paramsBuilder = new JobParametersBuilder();
-        paramsBuilder.addString( "localFilePath", "src/test/resources/test-files/test-state.csv" );
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-state.csv" ) );
 
-        return paramsBuilder.toJobParameters();
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeMeasure = new Measure( 43, "Violent crime rate" );
+
+            this.writer.write( Chunk.of( fakeMeasure ) );
+
+            int actualCount = this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM measure", Integer.class );
+            assertThat( actualCount ).isEqualTo( 1 );
+
+            var expected = new Measure( 43, "Violent crime rate" );
+
+            this.jdbcTemplate.query(
+                            "SELECT * FROM measure WHERE measure_id = 43",
+                            ( rs, rowNum ) ->
+                                    new Measure(
+                                            rs.getLong( "measure_id" ), rs.getString( "name" )
+                                    )
+                    )
+                    .forEach( measure -> assertThat( measure ).isEqualTo( expected ));
+
+            return null;
+        });
+
     }
 
 }

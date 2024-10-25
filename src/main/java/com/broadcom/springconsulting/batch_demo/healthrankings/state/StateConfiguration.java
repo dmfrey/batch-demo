@@ -2,11 +2,13 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.state;
 
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
@@ -55,10 +57,11 @@ public class StateConfiguration {
     }
 
     @Bean
-    ItemWriter<State> stateWriter( DataSource dataSource ) {
+    @StepScope
+    JdbcBatchItemWriter<State> stateWriter( final DataSource dataSource ) {
 
         return new JdbcBatchItemWriterBuilder<State>()
-                .sql( "INSERT INTO state (state_code, abbreviation) VALUES (:stateCode, :abbreviation) ON CONFLICT (state_code) DO UPDATE SET state_code = :stateCode" )
+                .sql( "INSERT INTO state (state_code, abbreviation, name, fips_code) VALUES (:stateCode, :abbreviation, :name, :fipsCode) ON CONFLICT (state_code) DO UPDATE SET state_code = :stateCode" )
                 .dataSource( dataSource )
                 .beanMapped()
                 .build();
