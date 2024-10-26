@@ -144,7 +144,7 @@ public class MeasureConfigurationTests {
 
         this.jdbcTemplate.update( "INSERT INTO measure (measure_id, name) VALUES (43, 'Violent crime rate')" );
 
-        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-state.csv" ) );
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
         StepScopeTestUtils.doInStepScope( stepExecution, () -> {
 
