@@ -1,6 +1,8 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.measure;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
+import com.broadcom.springconsulting.batch_demo.healthrankings.measure.exception.MeasureIdAlreadyExistsMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.measure.exception.MeasureIdRequiredMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -29,6 +31,7 @@ import javax.sql.DataSource;
 
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
 @SpringBatchTest
@@ -55,6 +58,9 @@ public class MeasureConfigurationTests {
 
     @Autowired
     private FlatFileItemReader<InputRow> reader;
+
+    @Autowired
+    private MeasureProcessor processor;
 
     @Autowired
     private JdbcBatchItemWriter<Measure> writer;
@@ -109,6 +115,55 @@ public class MeasureConfigurationTests {
         });
 
     }
+
+    @Test
+    void testMeasureProcessor_whenMeasureIdIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, null, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( MeasureIdRequiredMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testMeasureProcessor_whenMeasureIdAlreadyExists_verifySkip() throws Exception {
+
+        this.jdbcTemplate.update( "INSERT INTO measure (measure_id, name) VALUES (43, 'Violent crime rate')" );
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-state.csv" ) );
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( MeasureIdAlreadyExistsMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
 
     @Test
     void testMeasureWriterStep() throws Exception {

@@ -1,0 +1,4 @@
+package com.broadcom.springconsulting.batch_demo.healthrankings.measure.exception;
+
+public class MeasureIdAlreadyExistsMeasureProcessorException extends MeasureProcessorException{
+}
