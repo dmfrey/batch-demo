@@ -1,5 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.StateMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -13,6 +14,7 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -38,13 +40,15 @@ public class StateMeasureConfiguration {
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
+                .faultTolerant()
+                .skip( StateMeasureProcessorException.class )
                 .build();
     }
 
     @Bean
-    StateMeasureProcessor stateMeasureprocessor() {
+    StateMeasureProcessor stateMeasureProcessor( final JdbcTemplate jdbcTemplate ) {
 
-        return new StateMeasureProcessor();
+        return new StateMeasureProcessor( jdbcTemplate );
     }
 
     @Bean

@@ -4,6 +4,7 @@ import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.NonNull;
 
 import java.util.UUID;
@@ -11,6 +12,14 @@ import java.util.UUID;
 public class CountryMeasureProcessor implements ItemProcessor<InputRow, CountryMeasure> {
 
     private static final Logger log = LoggerFactory.getLogger( CountryMeasureProcessor.class );
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public CountryMeasureProcessor( final JdbcTemplate jdbcTemplate ) {
+
+        this.jdbcTemplate = jdbcTemplate;
+
+    }
 
     @Override
     public CountryMeasure process(@NonNull InputRow input ) throws Exception {
