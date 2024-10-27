@@ -164,6 +164,30 @@ public class MeasureConfigurationTests {
 
     }
 
+    @Test
+    void testMeasureProcessorStep() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            var actual = this.processor.process( fakeInputRow );
+
+            var expected = new Measure( 43, "Violent crime rate" );
+            assertThat( actual ).isEqualTo( expected );
+
+            return null;
+        });
+
+    }
 
     @Test
     void testMeasureWriterStep() throws Exception {
