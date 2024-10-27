@@ -31,8 +31,14 @@ public class CountryMeasureProcessor implements ItemProcessor<InputRow, CountryM
             throw new MeasureIdRequiredCountryMeasureProcessorException();
         }
 
-        if( !input.stateCode().equals( 0L ) && !input.countyCode().equals( 0L ) ) {
-            log.warn( "process : stateCode and countryCode are not 0, not a country measure, skipping" );
+        if( !input.stateCode().equals( 0L ) ) {
+            log.warn( "process : stateCode is not 0, not a country measure, state measure, skipping" );
+
+            throw new NotCountryMeasureRecordCountryMeasureProcessorException();
+        }
+
+        if( !input.countyCode().equals( 0L ) ) {
+            log.warn( "process : countryCode is not 0, not a country measure, county measure, skipping" );
 
             throw new NotCountryMeasureRecordCountryMeasureProcessorException();
         }

@@ -126,7 +126,7 @@ public class CountryMeasureConfigurationTests {
     }
 
     @Test
-    void testCountryMeasureProcessor_whenCountryCodeIsNull_verifySkip() throws Exception {
+    void testCountryMeasureProcessor_whenStateCodeIsNull_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
@@ -135,6 +135,29 @@ public class CountryMeasureConfigurationTests {
             var fakeInputRow =
                     new InputRow(
                             null, null, null, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( CountryCodeRequiredCountryMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryMeasureProcessor_whenCountyCodeIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, 1L, null, null,
                             null, null, null, null,
                             null, null, null, "",
                             null
@@ -172,7 +195,30 @@ public class CountryMeasureConfigurationTests {
     }
 
     @Test
-    void testCountryMeasureProcessor_whenNotCountryInputRecord_verifySkip() throws Exception {
+    void testCountryMeasureProcessor_whenStateCodeNotZeroStateInputRecord_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( NotCountryMeasureRecordCountryMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryMeasureProcessor_whenCountyCodeNotZeroCountyInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
