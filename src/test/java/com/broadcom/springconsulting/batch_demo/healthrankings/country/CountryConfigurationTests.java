@@ -1,8 +1,8 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
-import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryIdAlreadyExistsCountryProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryIdRequiredCountryProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryCodeAlreadyExistsCountryProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryCodeRequiredCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.NotCountryRecordCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
@@ -135,7 +135,7 @@ public class CountryConfigurationTests {
                     );
 
             assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountryIdRequiredCountryProcessorException.class );
+                    .isInstanceOf( CountryCodeRequiredCountryProcessorException.class );
 
             return null;
         });
@@ -183,7 +183,7 @@ public class CountryConfigurationTests {
                     );
 
             assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountryIdAlreadyExistsCountryProcessorException.class );
+                    .isInstanceOf( CountryCodeAlreadyExistsCountryProcessorException.class );
 
             return null;
         });

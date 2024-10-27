@@ -1,7 +1,7 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
-import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyIdAlreadyExistsCountyProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyIdRequiredCountyProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyCodeAlreadyExistsCountyProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyCodeRequiredCountyProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class CountyProcessor implements ItemProcessor<InputRow, County> {
         if( null == input.countyCode() ) {
             log.error( "process : countyCode is null, skipping" );
 
-            throw new CountyIdRequiredCountyProcessorException();
+            throw new CountyCodeRequiredCountyProcessorException();
         }
 
         var existing =
@@ -35,7 +35,7 @@ public class CountyProcessor implements ItemProcessor<InputRow, County> {
                         "SELECT count(county_code) FROM county WHERE county_code = ?", Integer.class, input.countyCode() );
         if( null != existing && !existing.equals( 0 ) ) {
 
-            throw new CountyIdAlreadyExistsCountyProcessorException();
+            throw new CountyCodeAlreadyExistsCountyProcessorException();
         }
 
         var county = new County(

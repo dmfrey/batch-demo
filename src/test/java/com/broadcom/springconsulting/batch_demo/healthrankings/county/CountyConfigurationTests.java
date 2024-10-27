@@ -1,8 +1,8 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
-import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyIdAlreadyExistsCountyProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyIdRequiredCountyProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyCodeAlreadyExistsCountyProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyCodeRequiredCountyProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -138,7 +138,7 @@ public class CountyConfigurationTests {
                     );
 
             assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountyIdRequiredCountyProcessorException.class );
+                    .isInstanceOf( CountyCodeRequiredCountyProcessorException.class );
 
             return null;
         });
@@ -164,7 +164,7 @@ public class CountyConfigurationTests {
                     );
 
             assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountyIdAlreadyExistsCountyProcessorException.class );
+                    .isInstanceOf( CountyCodeAlreadyExistsCountyProcessorException.class );
 
             return null;
         });
