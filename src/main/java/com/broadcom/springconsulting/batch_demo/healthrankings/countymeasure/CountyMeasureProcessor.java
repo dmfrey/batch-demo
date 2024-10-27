@@ -1,5 +1,8 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.CountyCodeRequiredCountyMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.MeasureIdRequiredCountyMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.NotCountyMeasureRecordCountyMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,25 +22,25 @@ public class CountyMeasureProcessor implements ItemProcessor<InputRow, CountyMea
         if( null == input.stateCode() || null == input.countyCode() ) {
             log.error( "process : stateCode or countyCode is null, skipping" );
 
-            return null;
+            throw new CountyCodeRequiredCountyMeasureProcessorException();
         }
 
         if( null == input.measureId() ) {
             log.error( "process : measureId is null, skipping" );
 
-            return null;
+            throw new MeasureIdRequiredCountyMeasureProcessorException();
         }
 
         if( input.stateCode().equals( 0L ) ) {
             log.warn( "process : stateCode is 0, country measure, skipping" );
 
-            return null;
+            throw new NotCountyMeasureRecordCountyMeasureProcessorException();
         }
 
         if( input.countyCode().equals( 0L ) ) {
             log.warn( "process : countyCode is 0, state measure, skipping" );
 
-            return null;
+            throw new NotCountyMeasureRecordCountyMeasureProcessorException();
         }
 
         var countyMeasure = new CountyMeasure(
