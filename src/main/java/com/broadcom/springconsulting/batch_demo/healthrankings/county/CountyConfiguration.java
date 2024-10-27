@@ -1,5 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -28,6 +29,8 @@ public class CountyConfiguration {
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
+                .faultTolerant()
+                .skip( CountyProcessorException.class )
                 .build();
     }
 
@@ -38,9 +41,9 @@ public class CountyConfiguration {
     }
 
     @Bean
-    CountyProcessor countyProcessor() {
+    CountyProcessor countyProcessor( final JdbcTemplate jdbcTemplate ) {
 
-        return new CountyProcessor();
+        return new CountyProcessor( jdbcTemplate );
     }
 
     @Bean

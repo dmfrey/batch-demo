@@ -1,6 +1,8 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyIdAlreadyExistsCountyProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyIdRequiredCountyProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -31,6 +33,7 @@ import javax.sql.DataSource;
 
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
 @SpringBatchTest
@@ -59,6 +62,9 @@ public class CountyConfigurationTests {
 
     @Autowired
     private FlatFileItemReader<InputRow> reader;
+
+    @Autowired
+    private CountyProcessor processor;
 
     @Autowired
     private JdbcBatchItemWriter<County> writer;
@@ -108,6 +114,55 @@ public class CountyConfigurationTests {
                 assertThat( inputRow ).isEqualTo( expected );
             }
             this.reader.close();
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountyProcessor_whenCountyIdIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, null, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( CountyIdRequiredCountyProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountyProcessor_whenCountyIdAlreadyExists_verifySkip() throws Exception {
+
+        this.jdbcTemplate.update( "INSERT INTO state (state_code, abbreviation, name, fips_code) VALUES (1, 'AL', 'ALABAMA', 1000)" );
+        this.jdbcTemplate.update( "INSERT INTO county (county_code, name, fips_code, state_code) VALUES (1, 'Autauga County', 1000, 1)" );
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Autauga County", 1L, 1L, "2003-2005",
+                            "Violent crime rate", 43L, 141.0, 46438.66667,
+                            303.6262884, null, null, "",
+                            1001L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( CountyIdAlreadyExistsCountyProcessorException.class );
 
             return null;
         });
