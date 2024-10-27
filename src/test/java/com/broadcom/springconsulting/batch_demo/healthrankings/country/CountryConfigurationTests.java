@@ -1,6 +1,9 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryIdAlreadyExistsCountryProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryIdRequiredCountryProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.NotCountryRecordCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -29,6 +32,7 @@ import javax.sql.DataSource;
 
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
 @SpringBatchTest
@@ -57,6 +61,9 @@ public class CountryConfigurationTests {
     private FlatFileItemReader<InputRow> reader;
 
     @Autowired
+    private CountryProcessor processor;
+
+    @Autowired
     private JdbcBatchItemWriter<Country> writer;
 
     private JdbcTemplate jdbcTemplate;
@@ -72,6 +79,8 @@ public class CountryConfigurationTests {
     void cleanUp() {
 
         jobRepositoryTestUtils.removeJobExecutions();
+
+        this.jdbcTemplate.update( "TRUNCATE TABLE country CASCADE" );
 
     }
 
@@ -104,6 +113,102 @@ public class CountryConfigurationTests {
                 assertThat( inputRow ).isEqualTo( expected );
             }
             this.reader.close();
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryProcessor_whenCounrtyIdIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, null, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( CountryIdRequiredCountryProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryProcessor_whenNotCountryInputRecord_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Autauga County", 1L, 1L, "2003-2005",
+                            "Violent crime rate", 43L, 141.0, 46438.66667,
+                            303.6262884, null, null, "",
+                            1001L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( NotCountryRecordCountryProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryProcessor_whenCountryIdAlreadyExists_verifySkip() throws Exception {
+
+        this.jdbcTemplate.update( "INSERT INTO country (country_code, abbreviation, name, fips_code) VALUES (0, 'US', 'United States', 0)" );
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "US", "United States", 0L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
+                            483.3980657, null, null, "",
+                            0L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( CountryIdAlreadyExistsCountryProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryProcessorStep() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "US", "United States", 0L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
+                            483.3980657, null, null, "",
+                            0L
+                    );
+
+            var actual = this.processor.process( fakeInputRow );
+
+            var expected = new Country( 0, "US", "United States", 0 );
+            assertThat( actual ).isEqualTo( expected );
 
             return null;
         });

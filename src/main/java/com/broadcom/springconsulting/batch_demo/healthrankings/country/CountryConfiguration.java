@@ -1,5 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -39,6 +40,8 @@ public class CountryConfiguration {
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
+                .faultTolerant()
+                .skip( CountryProcessorException.class )
                 .build();
     }
 
@@ -49,9 +52,9 @@ public class CountryConfiguration {
     }
 
     @Bean
-    CountryProcessor countryProcessor() {
+    CountryProcessor countryProcessor( final JdbcTemplate jdbcTemplate ) {
 
-        return new CountryProcessor();
+        return new CountryProcessor( jdbcTemplate );
     }
 
     @Bean
