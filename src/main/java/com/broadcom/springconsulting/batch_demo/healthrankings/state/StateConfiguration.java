@@ -1,5 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.state;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.StateProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -41,6 +42,8 @@ public class StateConfiguration {
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
+                .faultTolerant()
+                .skip( StateProcessorException.class )
                 .build();
     }
 
@@ -51,9 +54,9 @@ public class StateConfiguration {
     }
 
     @Bean
-    StateProcessor stateProcessor() {
+    StateProcessor stateProcessor( final JdbcTemplate jdbcTemplate ) {
 
-        return new StateProcessor();
+        return new StateProcessor( jdbcTemplate );
     }
 
     @Bean
