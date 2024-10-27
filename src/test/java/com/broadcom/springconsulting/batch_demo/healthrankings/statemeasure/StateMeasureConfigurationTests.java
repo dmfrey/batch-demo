@@ -1,6 +1,9 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
+import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.MeasureIdRequiredStateMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.NotStateMeasureRecordStateMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.StateCodeRequiredStateMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -33,6 +36,7 @@ import java.util.UUID;
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.isType;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
 @SpringBatchTest
@@ -61,6 +65,9 @@ public class StateMeasureConfigurationTests {
 
     @Autowired
     private FlatFileItemReader<InputRow> reader;
+
+    @Autowired
+    private StateMeasureProcessor processor;
 
     @Autowired
     private JdbcBatchItemWriter<StateMeasure> writer;
@@ -110,6 +117,151 @@ public class StateMeasureConfigurationTests {
                 assertThat( inputRow ).isEqualTo( expected );
             }
             this.reader.close();
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateMeasureProcessor_whenStateCodeIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, null, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( StateCodeRequiredStateMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateMeasureProcessor_whenCountyCodeIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, 1L, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( StateCodeRequiredStateMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateProcessor_whenMeasureIdIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            null, null, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( MeasureIdRequiredStateMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateMeasureProcessor_whenCountryInputRecord_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "US", "United States", 0L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
+                            483.3980657, null, null, "",
+                            0L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( NotStateMeasureRecordStateMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateMeasureProcessor_whenCountyInputRecord_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Autauga County", 1L, 1L, "2003-2005",
+                            "Violent crime rate", 43L, 141.0, 46438.66667,
+                            303.6262884, null, null, "",
+                            1001L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( NotStateMeasureRecordStateMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateMeasureProcessorStep() throws Exception {
+
+        var fakeStateMeasureId = UUID.randomUUID();
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            var actual = this.processor.process( fakeInputRow );
+
+            var expected = new StateMeasure( fakeStateMeasureId, "2003-2005", 18174.83333, 4221248.167, 430.5559071, 0.0, 0.0, "", 1L, 43L );
+            assertThat( actual )
+                    .usingRecursiveComparison()
+                    .withEqualsForFields( isType( UUID.class ), "id" )
+                    .isEqualTo( expected );
 
             return null;
         });
