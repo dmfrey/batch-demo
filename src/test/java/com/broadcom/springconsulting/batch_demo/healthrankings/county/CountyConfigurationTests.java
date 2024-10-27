@@ -172,6 +172,31 @@ public class CountyConfigurationTests {
     }
 
     @Test
+    void testCountyProcessorStep() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Autauga County", 1L, 1L, "2003-2005",
+                            "Violent crime rate", 43L, 141.0, 46438.66667,
+                            303.6262884, null, null, "",
+                            1001L
+                    );
+
+            var actual = this.processor.process( fakeInputRow );
+
+            var expected = new County( 1, "Autauga County", 1001, 1 );
+            assertThat( actual ).isEqualTo( expected );
+
+            return null;
+        });
+
+    }
+
+    @Test
     void testCountyWriterStep() throws Exception {
 
         this.jdbcTemplate.update( "INSERT INTO state (state_code, abbreviation, name, fips_code) VALUES (1, 'AL', 'ALABAMA', 1000)" );
