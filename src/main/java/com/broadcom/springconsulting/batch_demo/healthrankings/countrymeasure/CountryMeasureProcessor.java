@@ -1,5 +1,8 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.CountryCodeRequiredCountryMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.MeasureIdRequiredCountryMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.NotCountryMeasureRecordCountryMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,25 +25,25 @@ public class CountryMeasureProcessor implements ItemProcessor<InputRow, CountryM
     }
 
     @Override
-    public CountryMeasure process(@NonNull InputRow input ) throws Exception {
+    public CountryMeasure process( @NonNull InputRow input ) throws Exception {
 
         log.debug( "process : InputRow [{}]", input );
         if( null == input.stateCode() || null == input.countyCode() ) {
             log.error( "process : stateCode or countyCode is null, skipping" );
 
-            return null;
+            throw new CountryCodeRequiredCountryMeasureProcessorException();
         }
 
         if( null == input.measureId() ) {
             log.error( "process : measureId is null, skipping" );
 
-            return null;
+            throw new MeasureIdRequiredCountryMeasureProcessorException();
         }
 
         if( !input.stateCode().equals( 0L ) && !input.countyCode().equals( 0L ) ) {
             log.warn( "process : stateCode and countryCode are not 0, not a country measure, skipping" );
 
-            return null;
+            throw new NotCountryMeasureRecordCountryMeasureProcessorException();
         }
 
         var countryMeasure = new CountryMeasure(
