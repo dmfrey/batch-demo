@@ -83,6 +83,8 @@ public class CountyConfigurationTests {
 
         jobRepositoryTestUtils.removeJobExecutions();
 
+        this.jdbcTemplate.update( "TRUNCATE TABLE state CASCADE" );
+
     }
 
     @Test
