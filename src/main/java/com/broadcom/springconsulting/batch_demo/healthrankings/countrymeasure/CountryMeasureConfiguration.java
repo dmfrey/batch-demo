@@ -14,7 +14,6 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -46,9 +45,9 @@ public class CountryMeasureConfiguration {
     }
 
     @Bean
-    CountryMeasureProcessor countryMeasureprocessor( final JdbcTemplate jdbcTemplate ) {
+    CountryMeasureProcessor countryMeasureprocessor() {
 
-        return new CountryMeasureProcessor( jdbcTemplate );
+        return new CountryMeasureProcessor();
     }
 
     @Bean
