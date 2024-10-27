@@ -120,7 +120,7 @@ public class CountryConfigurationTests {
     }
 
     @Test
-    void testCountryProcessor_whenCounrtyIdIsNull_verifySkip() throws Exception {
+    void testCountryProcessor_whenCountryCodeIsNull_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 

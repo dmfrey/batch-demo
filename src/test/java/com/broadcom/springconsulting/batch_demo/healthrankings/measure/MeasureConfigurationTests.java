@@ -79,6 +79,8 @@ public class MeasureConfigurationTests {
 
         jobRepositoryTestUtils.removeJobExecutions();
 
+        this.jdbcTemplate.update( "TRUNCATE TABLE measure CASCADE" );
+
     }
 
     @Test
