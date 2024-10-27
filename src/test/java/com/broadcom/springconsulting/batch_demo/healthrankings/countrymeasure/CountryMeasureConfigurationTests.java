@@ -1,6 +1,9 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.CountryCodeRequiredCountryMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.MeasureIdRequiredCountryMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.NotCountryMeasureRecordCountryMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -33,6 +36,7 @@ import java.util.UUID;
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.isType;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
 @SpringBatchTest
@@ -63,6 +67,9 @@ public class CountryMeasureConfigurationTests {
     private FlatFileItemReader<InputRow> reader;
 
     @Autowired
+    private CountryMeasureProcessor processor;
+
+    @Autowired
     private JdbcBatchItemWriter<CountryMeasure> writer;
 
     private JdbcTemplate jdbcTemplate;
@@ -79,6 +86,8 @@ public class CountryMeasureConfigurationTests {
 
         jobRepositoryTestUtils.removeJobExecutions();
 
+        this.jdbcTemplate.update( "TRUNCATE TABLE country CASCADE" );
+
     }
 
     @Test
@@ -91,16 +100,16 @@ public class CountryMeasureConfigurationTests {
     @Test
     void testCountryMeasureReaderStep() throws Exception {
 
-        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-state.csv" ) );
+        var stepExecution = MetaDataInstanceFactory.createStepExecution( defaultJobParameters( "src/test/resources/test-files/test-country.csv" ) );
 
         StepScopeTestUtils.doInStepScope( stepExecution, () -> {
 
             var expected =
                     new InputRow(
-                            "AL", "Alabama", 1L, 0L, "2003-2005",
-                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
-                            430.5559071, null, null, "",
-                            1000L
+                            "US", "United States", 0L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
+                            483.3980657, null, null, "",
+                            0L
                     );
 
             this.reader.open( stepExecution.getExecutionContext() );
@@ -110,6 +119,151 @@ public class CountryMeasureConfigurationTests {
                 assertThat( inputRow ).isEqualTo( expected );
             }
             this.reader.close();
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryMeasureProcessor_whenStateCodeIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, null, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( CountryCodeRequiredCountryMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryMeasureProcessor_whenCountyCodeIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, 1L, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( CountryCodeRequiredCountryMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryProcessor_whenMeasureIdIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "US", "United States", 0L, 0L, "2003-2005",
+                            null, null, 1328750.667, 274877117.0,
+                            483.3980657, null, null, "",
+                            0L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( MeasureIdRequiredCountryMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryMeasureProcessor_whenStateCodeNotZeroStateInputRecord_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( NotCountryMeasureRecordCountryMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryMeasureProcessor_whenCountyCodeNotZeroCountyInputRecord_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Autauga County", 1L, 1L, "2003-2005",
+                            "Violent crime rate", 43L, 141.0, 46438.66667,
+                            303.6262884, null, null, "",
+                            1001L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( NotCountryMeasureRecordCountryMeasureProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountryMeasureProcessorStep() throws Exception {
+
+        var fakeCountryMeasureId = UUID.randomUUID();
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "US", "United States", 0L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
+                            483.3980657, null, null, "",
+                            0L
+                    );
+
+            var actual = this.processor.process( fakeInputRow );
+
+            var expected = new CountryMeasure( fakeCountryMeasureId, "2003-2005", 1328750.667, 274877117.0, 483.3980657, 0.0, 0.0, "", 0L, 43L );
+            assertThat( actual )
+                    .usingRecursiveComparison()
+                    .withEqualsForFields( isType( UUID.class ), "id" )
+                    .isEqualTo( expected );
 
             return null;
         });

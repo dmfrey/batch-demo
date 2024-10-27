@@ -1,5 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.StateMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -38,11 +39,13 @@ public class StateMeasureConfiguration {
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
+                .faultTolerant()
+                .skip( StateMeasureProcessorException.class )
                 .build();
     }
 
     @Bean
-    StateMeasureProcessor stateMeasureprocessor() {
+    StateMeasureProcessor stateMeasureProcessor() {
 
         return new StateMeasureProcessor();
     }

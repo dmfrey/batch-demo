@@ -1,0 +1,4 @@
+package com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception;
+
+public class MeasureIdRequiredStateMeasureProcessorException extends StateMeasureProcessorException {
+}

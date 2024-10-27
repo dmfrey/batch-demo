@@ -1,5 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.measure;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.measure.exception.MeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -41,6 +42,8 @@ public class MeasureConfiguration {
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
+                .faultTolerant()
+                .skip( MeasureProcessorException.class )
                 .build();
     }
 
@@ -51,9 +54,9 @@ public class MeasureConfiguration {
     }
 
     @Bean
-    MeasureProcessor measureProcessor() {
+    MeasureProcessor measureProcessor( final JdbcTemplate jdbcTemplate ) {
 
-        return new MeasureProcessor();
+        return new MeasureProcessor( jdbcTemplate );
     }
 
     @Bean

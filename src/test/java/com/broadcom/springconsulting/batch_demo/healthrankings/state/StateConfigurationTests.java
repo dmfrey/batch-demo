@@ -1,6 +1,9 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.state;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
+import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.NotStateRecordStateProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.StateCodeAlreadyExistsStateProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.StateCodeRequiredStateProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -29,6 +32,7 @@ import javax.sql.DataSource;
 
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Import({ TestcontainersConfiguration.class, ReaderConfiguration.class })
 @SpringBatchTest
@@ -57,6 +61,9 @@ public class StateConfigurationTests {
     private FlatFileItemReader<InputRow> reader;
 
     @Autowired
+    private StateProcessor processor;
+
+    @Autowired
     private JdbcBatchItemWriter<State> writer;
 
     private JdbcTemplate jdbcTemplate;
@@ -72,6 +79,8 @@ public class StateConfigurationTests {
     void cleanUp() {
 
         jobRepositoryTestUtils.removeJobExecutions();
+
+        this.jdbcTemplate.update( "TRUNCATE TABLE state CASCADE" );
 
     }
 
@@ -104,6 +113,102 @@ public class StateConfigurationTests {
                 assertThat( inputRow ).isEqualTo( expected );
             }
             this.reader.close();
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateProcessor_whenStateCodeIsNull_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            null, null, null, null, null,
+                            null, null, null, null,
+                            null, null, null, "",
+                            null
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( StateCodeRequiredStateProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateProcessor_whenCountyCodeIsNotZero_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Autauga County", 1L, 1L, "2003-2005",
+                            "Violent crime rate", 43L, 141.0, 46438.66667,
+                            303.6262884, null, null, "",
+                            1001L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( NotStateRecordStateProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateProcessor_whenStateIdAlreadyExists_verifySkip() throws Exception {
+
+        this.jdbcTemplate.update( "INSERT INTO state (state_code, abbreviation, name, fips_code) VALUES (1, 'AL', 'Alabama', 1000)" );
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( StateCodeAlreadyExistsStateProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testStateProcessorStep() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            var actual = this.processor.process( fakeInputRow );
+
+            var expected = new State( 1, "AL", "Alabama", 1000 );
+            assertThat( actual ).isEqualTo( expected );
 
             return null;
         });

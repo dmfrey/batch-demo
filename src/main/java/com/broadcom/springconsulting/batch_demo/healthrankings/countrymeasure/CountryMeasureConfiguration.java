@@ -1,5 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.CountryMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -30,7 +31,7 @@ public class CountryMeasureConfiguration {
     }
 
     @Bean
-    public Step countryMeasureStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager,
+    public Step countryMeasureStep( JobRepository jobRepository, DataSourceTransactionManager transactionManager,
                                  FlatFileItemReader<InputRow> reader, CountryMeasureProcessor processor, ItemWriter<CountryMeasure> writer ) {
 
         return new StepBuilder("country measure step", jobRepository )
@@ -38,6 +39,8 @@ public class CountryMeasureConfiguration {
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )
+                .faultTolerant()
+                .skip( CountryMeasureProcessorException.class )
                 .build();
     }
 
