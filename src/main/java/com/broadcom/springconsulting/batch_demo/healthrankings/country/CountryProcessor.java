@@ -40,8 +40,8 @@ public class CountryProcessor implements ItemProcessor<InputRow, Country> {
 
         var existing =
                 this.jdbcTemplate.queryForObject(
-                        "SELECT count(country_code) FROM country WHERE country_code = ?", Integer.class, input.stateCode() );
-        if( null != existing && !existing.equals( 0 ) ) {
+                        "SELECT count(country_code) FROM country WHERE country_code = ?", int.class, input.stateCode() );
+        if( existing != 0 ) {
 
             throw new CountryCodeAlreadyExistsCountryProcessorException();
         }

@@ -32,8 +32,8 @@ public class CountyProcessor implements ItemProcessor<InputRow, County> {
 
         var existing =
                 this.jdbcTemplate.queryForObject(
-                        "SELECT count(county_code) FROM county WHERE county_code = ?", Integer.class, input.countyCode() );
-        if( null != existing && !existing.equals( 0 ) ) {
+                        "SELECT count(county_code) FROM county WHERE county_code = ?", int.class, input.countyCode() );
+        if( existing != 0 ) {
 
             throw new CountyCodeAlreadyExistsCountyProcessorException();
         }

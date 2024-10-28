@@ -40,8 +40,8 @@ public class StateProcessor implements ItemProcessor<InputRow, State> {
 
         var existing =
                 this.jdbcTemplate.queryForObject(
-                        "SELECT count(state_code) FROM state WHERE state_code = ?", Integer.class, input.stateCode() );
-        if( null != existing && !existing.equals( 0 ) ) {
+                        "SELECT count(state_code) FROM state WHERE state_code = ?", int.class, input.stateCode() );
+        if( existing != 0 ) {
 
             throw new StateCodeAlreadyExistsStateProcessorException();
         }
