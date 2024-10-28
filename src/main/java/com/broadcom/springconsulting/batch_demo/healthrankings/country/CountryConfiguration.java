@@ -1,5 +1,7 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.client.CountryClient;
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.client.CountryClientJdbcClient;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
@@ -14,7 +16,7 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -32,7 +34,7 @@ public class CountryConfiguration {
     }
 
     @Bean
-    public Step countryStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager,
+    public Step countryStep( JobRepository jobRepository, DataSourceTransactionManager transactionManager,
                            FlatFileItemReader<InputRow> reader, CountryProcessor processor, ItemWriter<Country> writer ) {
 
         return new StepBuilder("country step", jobRepository )
@@ -46,15 +48,15 @@ public class CountryConfiguration {
     }
 
     @Bean
-    CountryStepExecutionListener countryStepExecutionListener( final JdbcTemplate jdbcTemplate ) {
+    CountryStepExecutionListener countryStepExecutionListener( final CountryClient countryClient ) {
 
-        return new CountryStepExecutionListener( jdbcTemplate );
+        return new CountryStepExecutionListener( countryClient );
     }
 
     @Bean
-    CountryProcessor countryProcessor( final JdbcTemplate jdbcTemplate ) {
+    CountryProcessor countryProcessor( final CountryClient countryClient ) {
 
-        return new CountryProcessor( jdbcTemplate );
+        return new CountryProcessor( countryClient );
     }
 
     @Bean
@@ -66,6 +68,12 @@ public class CountryConfiguration {
                 .dataSource( dataSource )
                 .beanMapped()
                 .build();
+    }
+
+    @Bean
+    CountryClient countryClient( final JdbcClient jdbcClient ) {
+
+        return new CountryClientJdbcClient( jdbcClient );
     }
 
 }

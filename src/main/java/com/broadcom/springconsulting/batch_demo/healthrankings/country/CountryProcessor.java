@@ -1,5 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.client.CountryClient;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryCodeAlreadyExistsCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryCodeRequiredCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.NotCountryRecordCountryProcessorException;
@@ -7,18 +8,17 @@ import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.NonNull;
 
 public class CountryProcessor implements ItemProcessor<InputRow, Country> {
 
     private static final Logger log = LoggerFactory.getLogger( CountryProcessor.class );
 
-    private final JdbcTemplate jdbcTemplate;
+    private final CountryClient countryClient;
 
-    public CountryProcessor( final JdbcTemplate jdbcTemplate ) {
+    public CountryProcessor( final CountryClient countryClient ) {
 
-        this.jdbcTemplate = jdbcTemplate;
+        this.countryClient = countryClient;
 
     }
 
@@ -38,13 +38,8 @@ public class CountryProcessor implements ItemProcessor<InputRow, Country> {
             throw new NotCountryRecordCountryProcessorException();
         }
 
-        var existing =
-                this.jdbcTemplate.queryForObject(
-                        "SELECT count(country_code) FROM country WHERE country_code = ?", int.class, input.stateCode() );
-        if( existing != 0 ) {
-
-            throw new CountryCodeAlreadyExistsCountryProcessorException();
-        }
+        this.countryClient.findById( input.stateCode() )
+                .ifPresent( country -> { throw new CountryCodeAlreadyExistsCountryProcessorException(); } );
 
         var country = new Country(
                 input.stateCode(), input.state(), input.county(),
