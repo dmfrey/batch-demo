@@ -1,22 +1,23 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.client.CountyClient;
 import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyCodeAlreadyExistsCountyProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyCodeRequiredCountyProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.NonNull;
 
 public class CountyProcessor implements ItemProcessor<InputRow, County> {
 
     private static final Logger log = LoggerFactory.getLogger( CountyProcessor.class );
 
-    private final JdbcTemplate jdbcTemplate;
-    public CountyProcessor( final JdbcTemplate jdbcTemplate ) {
+    private final CountyClient countyClient;
 
-        this.jdbcTemplate = jdbcTemplate;
+    public CountyProcessor( final CountyClient countyClient ) {
+
+        this.countyClient = countyClient;
 
     }
 
@@ -30,13 +31,8 @@ public class CountyProcessor implements ItemProcessor<InputRow, County> {
             throw new CountyCodeRequiredCountyProcessorException();
         }
 
-        var existing =
-                this.jdbcTemplate.queryForObject(
-                        "SELECT count(county_code) FROM county WHERE county_code = ?", int.class, input.countyCode() );
-        if( existing != 0 ) {
-
-            throw new CountyCodeAlreadyExistsCountyProcessorException();
-        }
+        this.countyClient.findById( input.countyCode() )
+                .ifPresent( country -> { throw new CountyCodeAlreadyExistsCountyProcessorException(); } );
 
         var county = new County(
                 input.countyCode(), input.county(),
