@@ -1,5 +1,7 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.client.CountyClient;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.client.CountyClientJdbcClient;
 import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
@@ -13,6 +15,7 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -35,15 +38,15 @@ public class CountyConfiguration {
     }
 
     @Bean
-    CountyStepExecutionListener countyStepExecutionListener( final JdbcTemplate jdbcTemplate) {
+    CountyStepExecutionListener countyStepExecutionListener( final CountyClient countyClient ) {
 
-        return new CountyStepExecutionListener( jdbcTemplate );
+        return new CountyStepExecutionListener( countyClient );
     }
 
     @Bean
-    CountyProcessor countyProcessor( final JdbcTemplate jdbcTemplate ) {
+    CountyProcessor countyProcessor( final CountyClient countyClient ) {
 
-        return new CountyProcessor( jdbcTemplate );
+        return new CountyProcessor( countyClient );
     }
 
     @Bean
@@ -57,4 +60,9 @@ public class CountyConfiguration {
                 .build();
     }
 
+    @Bean
+    CountyClient countyClient( final JdbcClient jdbcClient ) {
+
+        return new CountyClientJdbcClient( jdbcClient );
+    }
 }

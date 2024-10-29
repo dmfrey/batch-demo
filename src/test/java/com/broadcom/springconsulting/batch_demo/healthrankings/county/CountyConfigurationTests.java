@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
@@ -53,9 +52,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class CountyConfigurationTests {
 
     private static final Logger log = LoggerFactory.getLogger( CountyConfigurationTests.class );
-
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
