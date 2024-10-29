@@ -1,6 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure;
 
-import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.CountryMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.CountryMeasureSkipPolicy;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -40,7 +40,7 @@ public class CountryMeasureConfiguration {
                 .processor( processor )
                 .writer( writer )
                 .faultTolerant()
-                .skip( CountryMeasureProcessorException.class )
+                .skipPolicy( countryMeasureSkipPolicy() )
                 .build();
     }
 
@@ -59,6 +59,12 @@ public class CountryMeasureConfiguration {
                 .dataSource( dataSource )
                 .beanMapped()
                 .build();
+    }
+
+    @Bean
+    CountryMeasureSkipPolicy countryMeasureSkipPolicy() {
+
+        return new CountryMeasureSkipPolicy();
     }
 
 }

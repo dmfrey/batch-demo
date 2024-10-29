@@ -3,7 +3,6 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.state;
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
 import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.NotStateRecordStateProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.StateCodeAlreadyExistsStateProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.StateCodeRequiredStateProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
@@ -50,9 +48,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 )
 @DirtiesContext
 public class StateConfigurationTests {
-
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
@@ -120,7 +115,7 @@ public class StateConfigurationTests {
     }
 
     @Test
-    void testStateProcessor_whenStateCodeIsNull_verifySkip() throws Exception {
+    void testStateProcessor_whenCountryInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
@@ -128,14 +123,14 @@ public class StateConfigurationTests {
 
             var fakeInputRow =
                     new InputRow(
-                            null, null, null, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
+                            "US", "United States", 0L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
+                            483.3980657, null, null, "",
+                            0L
                     );
 
             assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( StateCodeRequiredStateProcessorException.class );
+                    .isInstanceOf( NotStateRecordStateProcessorException.class );
 
             return null;
         });
@@ -143,7 +138,7 @@ public class StateConfigurationTests {
     }
 
     @Test
-    void testStateProcessor_whenCountyCodeIsNotZero_verifySkip() throws Exception {
+    void testStateProcessor_whenCountyInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 

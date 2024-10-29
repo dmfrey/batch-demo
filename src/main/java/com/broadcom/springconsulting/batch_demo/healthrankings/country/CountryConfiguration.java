@@ -2,7 +2,7 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.client.CountryClient;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.client.CountryClientJdbcClient;
-import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountrySkipPolicy;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -43,7 +43,7 @@ public class CountryConfiguration {
                 .processor( processor )
                 .writer( writer )
                 .faultTolerant()
-                .skip( CountryProcessorException.class )
+                .skipPolicy( countrySkipPolicy() )
                 .build();
     }
 
@@ -74,6 +74,12 @@ public class CountryConfiguration {
     CountryClient countryClient( final JdbcClient jdbcClient ) {
 
         return new CountryClientJdbcClient( jdbcClient );
+    }
+
+    @Bean
+    CountrySkipPolicy countrySkipPolicy() {
+
+        return new CountrySkipPolicy();
     }
 
 }

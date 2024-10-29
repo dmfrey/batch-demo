@@ -2,7 +2,6 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.client.CountryClient;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryCodeAlreadyExistsCountryProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryCodeRequiredCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.NotCountryRecordCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.slf4j.Logger;
@@ -26,14 +25,8 @@ public class CountryProcessor implements ItemProcessor<InputRow, Country> {
     public Country process( @NonNull InputRow input ) throws Exception {
 
         log.debug( "process : InputRow [{}]", input );
-        if( null == input.stateCode() || null == input.countyCode() ) {
-            log.error( "process : stateCode or countyCode is null, skipping" );
-
-            throw new CountryCodeRequiredCountryProcessorException();
-        }
-
-        if( !input.stateCode().equals( 0L ) && !input.countyCode().equals( 0L ) ) {
-            log.warn( "process : stateCode or countyCode are not 0, not a country, skipping" );
+        if( !input.stateCode().equals( 0L ) ) {
+            log.warn( "process : stateCode is not 0, not a country record, skipping" );
 
             throw new NotCountryRecordCountryProcessorException();
         }
@@ -41,6 +34,7 @@ public class CountryProcessor implements ItemProcessor<InputRow, Country> {
         this.countryClient.findById( input.stateCode() )
                 .ifPresent( country -> { throw new CountryCodeAlreadyExistsCountryProcessorException(); } );
 
+        // stateCode is 0 && country doesn't already exist
         var country = new Country(
                 input.stateCode(), input.state(), input.county(),
                 null != input.fipsCode() ? input.fipsCode() : 0L

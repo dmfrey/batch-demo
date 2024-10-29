@@ -1,6 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.measure;
 
-import com.broadcom.springconsulting.batch_demo.healthrankings.measure.exception.MeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.measure.exception.MeasureSkipPolicy;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -43,7 +43,7 @@ public class MeasureConfiguration {
                 .processor( processor )
                 .writer( writer )
                 .faultTolerant()
-                .skip( MeasureProcessorException.class )
+                .skipPolicy( measureSkipPolicy() )
                 .build();
     }
 
@@ -68,6 +68,12 @@ public class MeasureConfiguration {
                 .dataSource( dataSource )
                 .beanMapped()
                 .build();
+    }
+
+    @Bean
+    MeasureSkipPolicy measureSkipPolicy() {
+
+        return new MeasureSkipPolicy();
     }
 
 }

@@ -2,7 +2,6 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure;
 
 import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.MeasureIdRequiredStateMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.NotStateMeasureRecordStateMeasureProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.StateCodeRequiredStateMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +18,6 @@ public class StateMeasureProcessor implements ItemProcessor<InputRow, StateMeasu
     public StateMeasure process( @NonNull InputRow input ) throws Exception {
 
         log.debug( "process : InputRow [{}]", input );
-        if( null == input.stateCode() || null == input.countyCode() ) {
-            log.error( "process : stateCode or countyCode is null, skipping" );
-
-            throw new StateCodeRequiredStateMeasureProcessorException();
-        }
-
         if( null == input.measureId() ) {
             log.error( "process : measureId is null, skipping" );
 

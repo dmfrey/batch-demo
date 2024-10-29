@@ -1,6 +1,5 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure;
 
-import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.CountyCodeRequiredCountyMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.MeasureIdRequiredCountyMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.NotCountyMeasureRecordCountyMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
@@ -19,12 +18,6 @@ public class CountyMeasureProcessor implements ItemProcessor<InputRow, CountyMea
     public CountyMeasure process( @NonNull InputRow input ) throws Exception {
 
         log.debug( "process : InputRow [{}]", input );
-        if( null == input.stateCode() || null == input.countyCode() ) {
-            log.error( "process : stateCode or countyCode is null, skipping" );
-
-            throw new CountyCodeRequiredCountyMeasureProcessorException();
-        }
-
         if( null == input.measureId() ) {
             log.error( "process : measureId is null, skipping" );
 

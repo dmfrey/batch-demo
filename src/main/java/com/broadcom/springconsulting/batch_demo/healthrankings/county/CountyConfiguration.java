@@ -2,7 +2,7 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
 import com.broadcom.springconsulting.batch_demo.healthrankings.county.client.CountyClient;
 import com.broadcom.springconsulting.batch_demo.healthrankings.county.client.CountyClientJdbcClient;
-import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountySkipPolicy;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -14,7 +14,6 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
@@ -33,7 +32,7 @@ public class CountyConfiguration {
                 .processor( processor )
                 .writer( writer )
                 .faultTolerant()
-                .skip( CountyProcessorException.class )
+                .skipPolicy( countySkipPolicy() )
                 .build();
     }
 
@@ -65,4 +64,11 @@ public class CountyConfiguration {
 
         return new CountyClientJdbcClient( jdbcClient );
     }
+
+    @Bean
+    CountySkipPolicy countySkipPolicy() {
+
+        return new CountySkipPolicy();
+    }
+
 }

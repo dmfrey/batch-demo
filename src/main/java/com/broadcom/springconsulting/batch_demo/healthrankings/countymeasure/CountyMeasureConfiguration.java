@@ -1,6 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure;
 
-import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.CountyMeasureProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.CountyMeasureSkipPolicy;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -40,7 +40,7 @@ public class CountyMeasureConfiguration {
                 .processor( processor )
                 .writer( writer )
                 .faultTolerant()
-                .skip( CountyMeasureProcessorException.class )
+                .skipPolicy( countyMeasureSkipPolicy() )
                 .build();
     }
 
@@ -59,6 +59,12 @@ public class CountyMeasureConfiguration {
                 .dataSource( dataSource )
                 .beanMapped()
                 .build();
+    }
+
+    @Bean
+    CountyMeasureSkipPolicy countyMeasureSkipPolicy() {
+
+        return new CountyMeasureSkipPolicy();
     }
 
 }

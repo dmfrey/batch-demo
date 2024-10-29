@@ -3,7 +3,6 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure;
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
 import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.MeasureIdRequiredStateMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.NotStateMeasureRecordStateMeasureProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.statemeasure.exception.StateCodeRequiredStateMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
@@ -56,9 +54,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class StateMeasureConfigurationTests {
 
     private static final Logger log = LoggerFactory.getLogger( StateMeasureConfigurationTests.class );
-
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
@@ -117,52 +112,6 @@ public class StateMeasureConfigurationTests {
                 assertThat( inputRow ).isEqualTo( expected );
             }
             this.reader.close();
-
-            return null;
-        });
-
-    }
-
-    @Test
-    void testStateMeasureProcessor_whenStateCodeIsNull_verifySkip() throws Exception {
-
-        var stepExecution = MetaDataInstanceFactory.createStepExecution();
-
-        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
-
-            var fakeInputRow =
-                    new InputRow(
-                            null, null, null, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
-                    );
-
-            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( StateCodeRequiredStateMeasureProcessorException.class );
-
-            return null;
-        });
-
-    }
-
-    @Test
-    void testStateMeasureProcessor_whenCountyCodeIsNull_verifySkip() throws Exception {
-
-        var stepExecution = MetaDataInstanceFactory.createStepExecution();
-
-        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
-
-            var fakeInputRow =
-                    new InputRow(
-                            null, null, 1L, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
-                    );
-
-            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( StateCodeRequiredStateMeasureProcessorException.class );
 
             return null;
         });

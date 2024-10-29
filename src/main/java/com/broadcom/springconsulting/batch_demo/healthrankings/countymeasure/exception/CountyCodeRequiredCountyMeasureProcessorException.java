@@ -1,4 +1,0 @@
-package com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception;
-
-public class CountyCodeRequiredCountyMeasureProcessorException extends CountyMeasureProcessorException {
-}
