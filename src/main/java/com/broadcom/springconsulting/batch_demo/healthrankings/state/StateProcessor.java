@@ -24,13 +24,7 @@ public class StateProcessor implements ItemProcessor<InputRow, State> {
     @Override
     public State process( @NonNull InputRow input ) throws Exception {
 
-        log.debug( "process : InputRow [{}]", input );
-//        if( null == input.stateCode() ) {
-//            log.error( "process : stateCode is null, skipping" );
-//
-//            throw new StateCodeRequiredStateProcessorException();
-//        }
-
+        log.info( "process : InputRow [{}]", input );
         if( input.stateCode() == 0 && input.countyCode() == 0 ) {
             log.warn( "process : stateCode and countyCode are 0, country record, skipping" );
 

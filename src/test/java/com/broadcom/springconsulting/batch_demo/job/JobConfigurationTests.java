@@ -25,7 +25,6 @@ import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.jdbc.AutoConfigureDataJdbc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
@@ -35,6 +34,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 
 import static com.broadcom.springconsulting.batch_demo.healthrankings.TestUtils.defaultJobParameters;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.batch.core.BatchStatus.COMPLETED;
 
 @Import({
         TestcontainersConfiguration.class,
@@ -44,7 +44,6 @@ import static org.assertj.core.api.Assertions.assertThat;
         MeasureConfiguration.class,
         ReaderConfiguration.class
 })
-@SpringBootTest
 @SpringBatchTest
 @SpringJUnitConfig( JobConfiguration.class )
 @AutoConfigureDataJdbc
@@ -134,6 +133,20 @@ public class JobConfigurationTests {
 
         this.countyClient.findAll()
                 .forEach( c -> log.debug( "County [{}]", c ) );
+
+    }
+
+    @Test
+    void testCountrySteps() {
+
+        var jobExecution = this.jobLauncherTestUtils.launchStep( "country step", defaultJobParameters( "src/test/resources/test-files/test-all.csv" ) );
+        var actualStepExecutions = jobExecution.getStepExecutions();
+        var actualJobExitStatus = jobExecution.getExitStatus();
+
+        assertThat( actualStepExecutions.size() ).isEqualTo( 1 );
+        assertThat( actualJobExitStatus.getExitCode() ).isEqualTo( COMPLETED.toString() );
+
+        actualStepExecutions.forEach( stepExecution -> assertThat( stepExecution.getWriteCount() ).isEqualTo( 5 ));
 
     }
 

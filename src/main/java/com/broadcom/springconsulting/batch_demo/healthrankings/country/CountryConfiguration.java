@@ -38,7 +38,7 @@ public class CountryConfiguration {
                            FlatFileItemReader<InputRow> reader, CountryProcessor processor, ItemWriter<Country> writer ) {
 
         return new StepBuilder("country step", jobRepository )
-                .<InputRow, Country> chunk(100, transactionManager )
+                .<InputRow, Country> chunk(5, transactionManager )
                 .reader( reader )
                 .processor( processor )
                 .writer( writer )

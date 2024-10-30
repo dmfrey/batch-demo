@@ -24,7 +24,7 @@ public class CountryProcessor implements ItemProcessor<InputRow, Country> {
     @Override
     public Country process( @NonNull InputRow input ) throws Exception {
 
-        log.debug( "process : InputRow [{}]", input );
+        log.info( "process : InputRow [{}]", input );
         if( !input.stateCode().equals( 0L ) ) {
             log.warn( "process : stateCode is not 0, not a country record, skipping" );
 
@@ -39,7 +39,7 @@ public class CountryProcessor implements ItemProcessor<InputRow, Country> {
                 input.stateCode(), input.state(), input.county(),
                 null != input.fipsCode() ? input.fipsCode() : 0L
         );
-        log.debug( "process : Country [{}]", country );
+        log.info( "process : Country [{}]", country );
 
         return country;
     }
