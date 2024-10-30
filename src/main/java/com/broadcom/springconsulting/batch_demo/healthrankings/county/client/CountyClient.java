@@ -17,4 +17,6 @@ public interface CountyClient {
 
     void delete( long countyCode );
 
+    int countByStateCode( long stateCode );
+
 }

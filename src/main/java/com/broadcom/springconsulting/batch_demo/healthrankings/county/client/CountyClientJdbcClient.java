@@ -79,4 +79,13 @@ public class CountyClientJdbcClient implements CountyClient {
         log.debug( "delete : exit" );
     }
 
+    @Override
+    public int countByStateCode( final long stateCode ) {
+
+        return jdbcClient.sql( "SELECT count(name) FROM county WHERE state_code = :stateCode" )
+                .param( "stateCode", stateCode )
+                .query( int.class )
+                .single();
+    }
+
 }

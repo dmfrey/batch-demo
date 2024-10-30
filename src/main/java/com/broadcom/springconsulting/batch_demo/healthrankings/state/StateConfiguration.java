@@ -1,6 +1,8 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.state;
 
-import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.StateProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.state.client.StateClient;
+import com.broadcom.springconsulting.batch_demo.healthrankings.state.client.StateClientJdbcClient;
+import com.broadcom.springconsulting.batch_demo.healthrankings.state.exception.StateSkipPolicy;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -14,7 +16,7 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -43,20 +45,20 @@ public class StateConfiguration {
                 .processor( processor )
                 .writer( writer )
                 .faultTolerant()
-                .skip( StateProcessorException.class )
+                .skipPolicy( stateSkipPolicy() )
                 .build();
     }
 
     @Bean
-    StateStepExecutionListener stateStepExecutionListener( final JdbcTemplate jdbcTemplate ) {
+    StateStepExecutionListener stateStepExecutionListener( final StateClient stateClient ) {
 
-        return new StateStepExecutionListener( jdbcTemplate );
+        return new StateStepExecutionListener( stateClient );
     }
 
     @Bean
-    StateProcessor stateProcessor( final JdbcTemplate jdbcTemplate ) {
+    StateProcessor stateProcessor( final StateClient stateClient ) {
 
-        return new StateProcessor( jdbcTemplate );
+        return new StateProcessor( stateClient );
     }
 
     @Bean
@@ -68,6 +70,18 @@ public class StateConfiguration {
                 .dataSource( dataSource )
                 .beanMapped()
                 .build();
+    }
+
+    @Bean
+    StateClient stateClient( final JdbcClient jdbcClient ) {
+
+        return new StateClientJdbcClient( jdbcClient );
+    }
+
+    @Bean
+    StateSkipPolicy stateSkipPolicy() {
+
+        return new StateSkipPolicy();
     }
 
 }

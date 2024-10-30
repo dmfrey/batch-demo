@@ -2,7 +2,6 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.country;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryCodeAlreadyExistsCountryProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.CountryCodeRequiredCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.country.exception.NotCountryRecordCountryProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
@@ -50,9 +48,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 )
 @DirtiesContext
 public class CountryConfigurationTests {
-
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
@@ -120,7 +115,7 @@ public class CountryConfigurationTests {
     }
 
     @Test
-    void testCountryProcessor_whenCountryCodeIsNull_verifySkip() throws Exception {
+    void testCountryProcessor_whenStateInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
@@ -128,14 +123,14 @@ public class CountryConfigurationTests {
 
             var fakeInputRow =
                     new InputRow(
-                            null, null, null, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
                     );
 
             assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountryCodeRequiredCountryProcessorException.class );
+                    .isInstanceOf( NotCountryRecordCountryProcessorException.class );
 
             return null;
         });
@@ -143,7 +138,7 @@ public class CountryConfigurationTests {
     }
 
     @Test
-    void testCountryProcessor_whenNotCountryInputRecord_verifySkip() throws Exception {
+    void testCountryProcessor_whenCountyInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 

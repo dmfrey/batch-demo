@@ -2,11 +2,11 @@ debug: false
 
 logging.level:
   liquibase: info
-  io.micrometer.prometheus: debug
+  io.micrometer.prometheus: info
   org.springframework.batch: info
   org.springframework.cloud.task: debug
   org.springframework.jdbc: info
-  com.broadcom.springconsulting.batch_demo: info
+  com.broadcom.springconsulting: warn
 
 spring:
   application:
@@ -15,7 +15,7 @@ spring:
 
   batch:
     jdbc:
-      initialize-schema: never    # always
+      initialize-schema: always    # always
 
   cloud:
     task:

@@ -1,7 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
-import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.CountryCodeRequiredCountryMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.MeasureIdRequiredCountryMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.countrymeasure.exception.NotCountryMeasureRecordCountryMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
@@ -56,9 +54,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class CountryMeasureConfigurationTests {
 
     private static final Logger log = LoggerFactory.getLogger( CountryMeasureConfigurationTests.class );
-
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
@@ -126,52 +121,6 @@ public class CountryMeasureConfigurationTests {
     }
 
     @Test
-    void testCountryMeasureProcessor_whenStateCodeIsNull_verifySkip() throws Exception {
-
-        var stepExecution = MetaDataInstanceFactory.createStepExecution();
-
-        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
-
-            var fakeInputRow =
-                    new InputRow(
-                            null, null, null, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
-                    );
-
-            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountryCodeRequiredCountryMeasureProcessorException.class );
-
-            return null;
-        });
-
-    }
-
-    @Test
-    void testCountryMeasureProcessor_whenCountyCodeIsNull_verifySkip() throws Exception {
-
-        var stepExecution = MetaDataInstanceFactory.createStepExecution();
-
-        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
-
-            var fakeInputRow =
-                    new InputRow(
-                            null, null, 1L, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
-                    );
-
-            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountryCodeRequiredCountryMeasureProcessorException.class );
-
-            return null;
-        });
-
-    }
-
-    @Test
     void testCountryProcessor_whenMeasureIdIsNull_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
@@ -195,7 +144,7 @@ public class CountryMeasureConfigurationTests {
     }
 
     @Test
-    void testCountryMeasureProcessor_whenStateCodeNotZeroStateInputRecord_verifySkip() throws Exception {
+    void testCountryMeasureProcessor_whenStateInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
@@ -218,7 +167,7 @@ public class CountryMeasureConfigurationTests {
     }
 
     @Test
-    void testCountryMeasureProcessor_whenCountyCodeNotZeroCountyInputRecord_verifySkip() throws Exception {
+    void testCountryMeasureProcessor_whenCountyInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 

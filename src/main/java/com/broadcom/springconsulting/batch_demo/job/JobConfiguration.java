@@ -43,4 +43,10 @@ public class JobConfiguration {
                 .build();
     }
 
- }
+    @Bean
+    JobCompletionNotificationListener jobCompletionNotificationListener() {
+
+        return new JobCompletionNotificationListener();
+    }
+
+}

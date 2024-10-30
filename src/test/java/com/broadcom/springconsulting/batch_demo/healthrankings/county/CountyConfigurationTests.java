@@ -2,7 +2,7 @@ package com.broadcom.springconsulting.batch_demo.healthrankings.county;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
 import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyCodeAlreadyExistsCountyProcessorException;
-import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.CountyCodeRequiredCountyProcessorException;
+import com.broadcom.springconsulting.batch_demo.healthrankings.county.exception.NotCountyRecordCountyProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
 import com.broadcom.springconsulting.batch_demo.input.ReaderConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -119,7 +119,7 @@ public class CountyConfigurationTests {
     }
 
     @Test
-    void testCountyProcessor_whenCountyIdIsNull_verifySkip() throws Exception {
+    void testCountyProcessor_whenCountryInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
@@ -127,14 +127,37 @@ public class CountyConfigurationTests {
 
             var fakeInputRow =
                     new InputRow(
-                            null, null, null, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
+                            "US", "United States", 0L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 1328750.667, 274877117.0,
+                            483.3980657, null, null, "",
+                            0L
                     );
 
             assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountyCodeRequiredCountyProcessorException.class );
+                    .isInstanceOf( NotCountyRecordCountyProcessorException.class );
+
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCountyProcessor_whenStateInputRecord_verifySkip() throws Exception {
+
+        var stepExecution = MetaDataInstanceFactory.createStepExecution();
+
+        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
+
+            var fakeInputRow =
+                    new InputRow(
+                            "AL", "Alabama", 1L, 0L, "2003-2005",
+                            "Violent crime rate", 43L, 18174.83333, 4221248.167,
+                            430.5559071, null, null, "",
+                            1000L
+                    );
+
+            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
+                    .isInstanceOf( NotCountyRecordCountyProcessorException.class );
 
             return null;
         });

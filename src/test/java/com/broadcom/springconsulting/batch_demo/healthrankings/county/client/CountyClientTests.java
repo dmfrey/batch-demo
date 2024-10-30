@@ -156,6 +156,19 @@ class CountyClientTests {
 
     }
 
+    @Test
+    void testCountByStateCode() {
+
+        createTestState();
+
+        this.subject.create( new County( fakeCountyCode, fakeCountyName, fakeFipsCode, fakeStateCode ) );
+
+        var actual = this.subject.countByStateCode( fakeStateCode );
+
+        assertThat( actual ).isEqualTo( 1 );
+
+    }
+
     private void createTestState() {
 
         this.jdbcTemplate.update( "INSERT INTO state (state_code, abbreviation, name, fips_code) VALUES ('" + fakeStateCode + "', 'TS', 'Test STate', 1000)" );

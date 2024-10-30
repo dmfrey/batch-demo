@@ -17,7 +17,7 @@ public class ReaderConfiguration {
 
     @Bean
     @StepScope
-    FlatFileItemReader<InputRow> reader(@Value( "#{jobParameters['localFilePath'] ?: 'src/main/resources/sample-data/test.csv'}" ) String filePath ) {
+    FlatFileItemReader<InputRow> reader(@Value( "#{jobParameters['localFilePath'] ?: 'src/main/resources/sample-data/County_Health_Rankings.csv'}" ) String filePath ) {
 
         log.info( "reader : processing file [{}]", filePath );
 

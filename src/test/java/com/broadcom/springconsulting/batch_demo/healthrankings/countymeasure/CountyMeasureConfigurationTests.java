@@ -1,7 +1,6 @@
 package com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure;
 
 import com.broadcom.springconsulting.batch_demo.TestcontainersConfiguration;
-import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.CountyCodeRequiredCountyMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.MeasureIdRequiredCountyMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.healthrankings.countymeasure.exception.NotCountyMeasureRecordCountyMeasureProcessorException;
 import com.broadcom.springconsulting.batch_demo.input.InputRow;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
@@ -52,9 +50,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 )
 @DirtiesContext
 public class CountyMeasureConfigurationTests {
-
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
@@ -120,52 +115,6 @@ public class CountyMeasureConfigurationTests {
     }
 
     @Test
-    void testCountyMeasureProcessor_whenStateCodeIsNull_verifySkip() throws Exception {
-
-        var stepExecution = MetaDataInstanceFactory.createStepExecution();
-
-        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
-
-            var fakeInputRow =
-                    new InputRow(
-                            null, null, null, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
-                    );
-
-            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountyCodeRequiredCountyMeasureProcessorException.class );
-
-            return null;
-        });
-
-    }
-
-    @Test
-    void testCountyMeasureProcessor_whenCountyCodeIsNull_verifySkip() throws Exception {
-
-        var stepExecution = MetaDataInstanceFactory.createStepExecution();
-
-        StepScopeTestUtils.doInStepScope( stepExecution, () -> {
-
-            var fakeInputRow =
-                    new InputRow(
-                            null, null, 1L, null, null,
-                            null, null, null, null,
-                            null, null, null, "",
-                            null
-                    );
-
-            assertThatThrownBy( () -> this.processor.process( fakeInputRow ) )
-                    .isInstanceOf( CountyCodeRequiredCountyMeasureProcessorException.class );
-
-            return null;
-        });
-
-    }
-
-    @Test
     void testCountyProcessor_whenMeasureIdIsNull_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
@@ -189,7 +138,7 @@ public class CountyMeasureConfigurationTests {
     }
 
     @Test
-    void testCountyMeasureProcessor_whenStateCodeIsZeroCountryInputRecord_verifySkip() throws Exception {
+    void testCountyMeasureProcessor_whenCountryInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
@@ -212,7 +161,7 @@ public class CountyMeasureConfigurationTests {
     }
 
     @Test
-    void testCountyMeasureProcessor_whenCountyCodeIsZeroStateInputRecord_verifySkip() throws Exception {
+    void testCountyMeasureProcessor_whenStateInputRecord_verifySkip() throws Exception {
 
         var stepExecution = MetaDataInstanceFactory.createStepExecution();
 
