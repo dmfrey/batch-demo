@@ -39,7 +39,7 @@ The following sections bread down the file format and various record types withi
 
 ### Record Format
 
-|            | Column     | Column       | Column     | Column      | Column       | Column       | Column     | Column    | Column      | Column    | Column                          | Column Upper Bound              | Column            | Column   |
+|            | Column     | Column       | Column     | Column      | Column       | Column       | Column     | Column    | Column      | Column    | Column                          | Column              | Column            | Column   |
 |------------|------------|--------------|------------|-------------|--------------|--------------|------------|-----------|-------------|-----------|---------------------------------|---------------------------------|-------------------|----------|
 | *Name*     | State      | County       | State code | County code | Year span    | Measure name | Measure id | Numerator | Denominator | Raw value | Confidence Interval Lower Bound | Confidence Interval Upper Bound | Data Release Year | fipscode |
 | *Database* | varchar(2) | varchar(100) | bigint     | bigint      | varchar(100) | varchar(100) | bigint     | double | double | double | double | double | varchar(100)      | bigint   |
